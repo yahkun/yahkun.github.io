@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="SQL注入">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL注入攻击介绍">
-<meta property="og:url" content="http://yoursite.com/2016/07/26/web/sql-inject/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2016/07/26/web/sql-inject/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="SQL注入攻击（SQL Injection），简称注入攻击，是Web开发中最常见的一种安全漏洞。 可以用它来从数据库获取敏感信息，或者利用数据库的特性执行添加用户，导出文件等一系列恶意操作， 甚至有可能获取数据库乃至系统用户最高权限。 而造成SQL注入的原因是因为程序没有有效过滤用户的输入，使攻击者成功的向服务器提交恶意的SQL查询代码， 程序在接收后错误的将攻击者的输入作为查询语句的一部分执行，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-09-17T20:22:55.625Z">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/07/26/web/sql-inject/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2016/07/26/web/sql-inject/"/>
 
 
 
 
 
-  <title>SQL注入攻击介绍 | 秦时明月</title>
+  <title>SQL注入攻击介绍 | Yahkun的博客</title>
   
 
 
@@ -154,12 +154,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -225,16 +225,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -305,16 +295,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/26/web/sql-inject/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2016/07/26/web/sql-inject/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -591,11 +581,11 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -958,7 +948,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

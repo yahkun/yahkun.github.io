@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="springboot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot系列 - 集成Shiro权限管理">
-<meta property="og:url" content="http://yoursite.com/2017/07/07/spring/sb-shiro/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2017/07/07/spring/sb-shiro/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="Apache Shiro是Java的一个安全框架。目前，使用Apache Shiro的人越来越多，相比Spring Security而言相当简单， 可能没有Spring Security做的功能强大，但是在实际工作时可能并不需要那么复杂的东西， 所以使用小而简单的Shiro就足够了。对于它俩到底哪个好，这个不必纠结，能更简单的解决项目问题就好了。 本教程只介绍基本的Shiro使用，不会过多分析源码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-shiro01.png">
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/07/spring/sb-shiro/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2017/07/07/spring/sb-shiro/"/>
 
 
 
 
 
-  <title>SpringBoot系列 - 集成Shiro权限管理 | 秦时明月</title>
+  <title>SpringBoot系列 - 集成Shiro权限管理 | Yahkun的博客</title>
   
 
 
@@ -161,12 +161,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -232,16 +232,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -312,16 +302,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/spring/sb-shiro/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2017/07/07/spring/sb-shiro/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -653,11 +643,11 @@ Shiro可以帮助我们完成：认证、授权、加密、会话管理、与Web
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1020,7 +1010,7 @@ Shiro可以帮助我们完成：认证、授权、加密、会话管理、与Web
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

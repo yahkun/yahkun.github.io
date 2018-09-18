@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="systemd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos7上systemd详解">
-<meta property="og:url" content="http://yoursite.com/2016/06/07/linux/systemd/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2016/06/07/linux/systemd/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="CentOS 7继承了RHEL 7的新的特性，例如强大的systemd， 而systemd的使用也使得以往系统服务的/etc/init.d的启动脚本的方式就此改变， 也大幅提高了系统服务的运行效率。但服务的配置和以往也发生了极大的不同，同时变的简单而易用了许多。 CentOS 7的服务systemctl脚本存放在：/usr/lib/systemd/，有系统 system 和用户 user 之分，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-09-17T20:22:55.617Z">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/07/linux/systemd/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2016/06/07/linux/systemd/"/>
 
 
 
 
 
-  <title>centos7上systemd详解 | 秦时明月</title>
+  <title>centos7上systemd详解 | Yahkun的博客</title>
   
 
 
@@ -154,12 +154,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -225,16 +225,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -305,16 +295,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/07/linux/systemd/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2016/06/07/linux/systemd/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -605,11 +595,11 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -972,7 +962,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

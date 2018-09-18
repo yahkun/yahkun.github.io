@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="负载均衡">
 <meta property="og:type" content="article">
 <meta property="og:title" content="利用httpd对Tomcat进行负载均衡">
-<meta property="og:url" content="http://yoursite.com/2015/10/13/linux/httpd-tomcat/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2015/10/13/linux/httpd-tomcat/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="操作系统：CentOS 6.5_x86_64 前提：提前准备好编译环境，防火墙和selinux都关闭 主机IP：两台机器，192.168.203.103、192.168.203.104 安装软件：jdk-8u51-linux-x64, apache-tomcat-8.0.24, tomcat-connectors-1.2.41, httpd-2.2.15, httpd-devel-2.2.15">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-09-17T20:22:55.617Z">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/10/13/linux/httpd-tomcat/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2015/10/13/linux/httpd-tomcat/"/>
 
 
 
 
 
-  <title>利用httpd对Tomcat进行负载均衡 | 秦时明月</title>
+  <title>利用httpd对Tomcat进行负载均衡 | Yahkun的博客</title>
   
 
 
@@ -154,12 +154,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -225,16 +225,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -305,16 +295,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/13/linux/httpd-tomcat/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2015/10/13/linux/httpd-tomcat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -637,11 +627,11 @@ mod_jk需要额外编译安装，不过它功能更强大，所以推荐mod_jk�
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1004,7 +994,7 @@ mod_jk需要额外编译安装，不过它功能更强大，所以推荐mod_jk�
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

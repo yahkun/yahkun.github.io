@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="rabbitmq">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RabbitMQ简易教程 - RPC">
-<meta property="og:url" content="http://yoursite.com/2017/05/16/mq/rabbitmq-tutorial06/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2017/05/16/mq/rabbitmq-tutorial06/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="在教程第二篇里面我们学习了如何实现一个任务队列，异步方式去处理那些比较耗时的任务。 但是如果我们需要调用一个远程主机上面的方法，并且等待它的执行结果呢？ 这种模式我们通常将它称为远程方法调用（RPC）。 这一篇我们将利用RabbitMQ来构建一个RPC服务，服务器上面有一个可返回斐波拉契数的函数。 客户端通过rpc调用来获取结果。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/rb08.png">
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/16/mq/rabbitmq-tutorial06/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2017/05/16/mq/rabbitmq-tutorial06/"/>
 
 
 
 
 
-  <title>RabbitMQ简易教程 - RPC | 秦时明月</title>
+  <title>RabbitMQ简易教程 - RPC | Yahkun的博客</title>
   
 
 
@@ -156,12 +156,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -227,16 +227,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -307,16 +297,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/mq/rabbitmq-tutorial06/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2017/05/16/mq/rabbitmq-tutorial06/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -584,11 +574,11 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -951,7 +941,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

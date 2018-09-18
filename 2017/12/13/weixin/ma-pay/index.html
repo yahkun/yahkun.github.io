@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="小程序,微信支付">
 <meta property="og:type" content="article">
 <meta property="og:title" content="小程序开发 - 跳转支付">
-<meta property="og:url" content="http://yoursite.com/2017/12/13/weixin/ma-pay/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2017/12/13/weixin/ma-pay/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="根据微信支付的官方文档，小程序支付需要绑定商户号，并且小程序和商户号的认证主体必须一致。 目前我们的商业逻辑是小程序平台主体和支付的商户主体不一致， 那么就需要从我们的小程序跳转到支付主体小程序完成支付后，再返回我们的小程序。 曾经尝试过在小程序中通过webview的方式嵌套H5网页，使用公众号支付方式，后来发现小程序并未开放这个JSAPI。 接下来详细介绍一下如何实现小程序之间的跳转支付。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ma001.png">
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/13/weixin/ma-pay/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2017/12/13/weixin/ma-pay/"/>
 
 
 
 
 
-  <title>小程序开发 - 跳转支付 | 秦时明月</title>
+  <title>小程序开发 - 跳转支付 | Yahkun的博客</title>
   
 
 
@@ -160,12 +160,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -231,16 +231,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -311,16 +301,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/13/weixin/ma-pay/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2017/12/13/weixin/ma-pay/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -631,11 +621,11 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -998,7 +988,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="uwsgi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx+uWSGI部署Python Web应用">
-<meta property="og:url" content="http://yoursite.com/2017/01/20/python/uwsgi/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2017/01/20/python/uwsgi/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="web开发的过程中一定会遇到 cgi、wsgi 之类的名词，然后看着他们十分相似的解释估计还没开始写代码就晕了，这都什么鬼？ 今天我就聊聊这些容易搞混的名称。 CGI(Common Gateway Inteface) 字面意思就是通用网关接口，它是外部应用程序与Web服务器之间的接口标准，规定一个程序该如何与web服务器程序之间通信。 当然，CGI 只是一个很基本的协议，在现代常见的服务器结构中基">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/uwsgi-01.png">
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/01/20/python/uwsgi/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2017/01/20/python/uwsgi/"/>
 
 
 
 
 
-  <title>Nginx+uWSGI部署Python Web应用 | 秦时明月</title>
+  <title>Nginx+uWSGI部署Python Web应用 | Yahkun的博客</title>
   
 
 
@@ -156,12 +156,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -227,16 +227,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -307,16 +297,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/20/python/uwsgi/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2017/01/20/python/uwsgi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -693,11 +683,11 @@ Systemd 要求指定 uWSGI 可执行文件的完整路径。最后添加 [Instal
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1060,7 +1050,7 @@ Systemd 要求指定 uWSGI 可执行文件的完整路径。最后添加 [Instal
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

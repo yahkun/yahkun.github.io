@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="sed">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sed命令笔记">
-<meta property="og:url" content="http://yoursite.com/2016/09/20/linux/sed/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2016/09/20/linux/sed/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="在linux中通常要进行文本处理，sed是一个非常强大的文本处理命令工具。 配合正则表达式可以进行文本搜索、替换、插入、删除等操作。 sed基本上就是正则模式匹配，所以你的正则表达式要比较强才能玩的好它。 sed是一种新型的，非交互式的编辑器。它能执行与编辑器vi和ex相同的编辑任务。 sed编辑器没有提供交互使用方式，使用者只能在命令行输入编辑命令、指定文件名，然后在屏幕上查看输出。 sed编辑">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-09-17T20:22:55.617Z">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/09/20/linux/sed/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2016/09/20/linux/sed/"/>
 
 
 
 
 
-  <title>sed命令笔记 | 秦时明月</title>
+  <title>sed命令笔记 | Yahkun的博客</title>
   
 
 
@@ -154,12 +154,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -225,16 +225,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -305,16 +295,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/20/linux/sed/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2016/09/20/linux/sed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -582,11 +572,11 @@ sed编辑器没有破坏性，它不会修改文件，除非指定-i选项，默
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -949,7 +939,7 @@ sed编辑器没有破坏性，它不会修改文件，除非指定-i选项，默
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

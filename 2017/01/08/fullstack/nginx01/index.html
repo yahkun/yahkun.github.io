@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx笔记 - 配置和使用">
-<meta property="og:url" content="http://yoursite.com/2017/01/08/fullstack/nginx01/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2017/01/08/fullstack/nginx01/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="nginx是一个优秀的 HTTP 和反向代理服务器，一个邮件代理服务器， 一个通用TCP/UDP代理服务器，官网地址：https://nginx.org/en/ nginx由于出色的性能，在世界范围内受到了越来越多人的关注。其特点是占有内存少，并发能力强， 事实上nginx的并发能力确实在同类型的网页伺服器中表现较好。 目前中国大陆使用nginx网站用户有新浪、网易、腾讯，另外知名的微网志Plur">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/nginx-welcome.png">
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/01/08/fullstack/nginx01/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2017/01/08/fullstack/nginx01/"/>
 
 
 
 
 
-  <title>nginx笔记 - 配置和使用 | 秦时明月</title>
+  <title>nginx笔记 - 配置和使用 | Yahkun的博客</title>
   
 
 
@@ -158,12 +158,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -229,16 +229,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -309,16 +299,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/08/fullstack/nginx01/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2017/01/08/fullstack/nginx01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -717,11 +707,11 @@ server_name 指令告诉 nginx 怎么样处理对域名的请求，location 指�
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1084,7 +1074,7 @@ server_name 指令告诉 nginx 怎么样处理对域名的请求，location 指�
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

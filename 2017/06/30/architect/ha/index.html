@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="架构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常见互联网高可用架构">
-<meta property="og:url" content="http://yoursite.com/2017/06/30/architect/ha/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2017/06/30/architect/ha/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="高可用HA（High Availability）是分布式系统架构设计中必须考虑的因素之一， 它通常是指，通过设计减少系统不能提供服务的时间。 单点往往是系统高可用最大的风险和敌人，应该尽量在系统设计的过程中避免单点。 高可用保证的原则是“集群化”，或者叫“冗余”：只有一个单点，挂了服务会受影响。 如果有冗余备份，挂了还有其他backup能够顶上。 有了冗余之后，还不够，每次出现故障需要人工介入恢复">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/arch001.png">
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/30/architect/ha/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2017/06/30/architect/ha/"/>
 
 
 
 
 
-  <title>常见互联网高可用架构 | 秦时明月</title>
+  <title>常见互联网高可用架构 | Yahkun的博客</title>
   
 
 
@@ -162,12 +162,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -233,16 +233,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -313,16 +303,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/30/architect/ha/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2017/06/30/architect/ha/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -621,11 +611,11 @@ key水平切分实例减少，不建议做re-hash，这样容易引发缓存数�
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -988,7 +978,7 @@ key水平切分实例减少，不建议做re-hash，这样容易引发缓存数�
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {

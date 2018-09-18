@@ -70,7 +70,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Yahkun的博客" type="application/atom+xml" />
 
 
 
@@ -81,8 +81,8 @@
 <meta name="keywords" content="python核心">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python核心 - 正则表达式">
-<meta property="og:url" content="http://yoursite.com/2015/12/12/python/regexp/index.html">
-<meta property="og:site_name" content="秦时明月">
+<meta property="og:url" content="https://yahkun.github.io/2015/12/12/python/regexp/index.html">
+<meta property="og:site_name" content="Yahkun的博客">
 <meta property="og:description" content="字符串是编程时涉及到的最多的一种数据结构，对字符串进行操作的需求几乎无处不在。 正则表达式是一种用来匹配字符串的强有力的武器。它的设计思想是用一种描述性的语言来给字符串定义一个规则， 凡是符合规则的字符串，我们就认为它“匹配”了，否则，该字符串就是不合法的。 我们判断一个字符串是否是一个合法的电话号码分两步，首先创建一个符合电话号码规则的正则表达式， 然后用这个正则表达式来匹配这个字符串是否合法。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-09-17T20:22:55.617Z">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/12/12/python/regexp/"/>
+  <link rel="canonical" href="https://yahkun.github.io/2015/12/12/python/regexp/"/>
 
 
 
 
 
-  <title>python核心 - 正则表达式 | 秦时明月</title>
+  <title>python核心 - 正则表达式 | Yahkun的博客</title>
   
 
 
@@ -154,12 +154,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">秦时明月</span>
+        <span class="site-title">Yahkun的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">code the world, trave the world.</p>
+        <p class="site-subtitle">简单就是美，专心做好一件事。</p>
       
   </div>
 
@@ -225,16 +225,6 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
           </a>
         </li>
       
@@ -305,16 +295,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/12/python/regexp/">
+    <link itemprop="mainEntityOfPage" href="https://yahkun.github.io/2015/12/12/python/regexp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yahkun Ding">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦时明月">
+      <meta itemprop="name" content="Yahkun的博客">
     </span>
 
     
@@ -676,7 +666,7 @@
 <h3 id="条件匹配"><a href="#条件匹配" class="headerlink" title="条件匹配"></a>条件匹配</h3><p>(?(id/name)yes-pattern|no-pattern)</p>
 <p>如果group id或name存在就匹配yes-pattern否则匹配no-pattern，no-pattern可以省略。
 比如,<code>(&lt;)?(\w+@\w+(?:\.\w+)+)(?(1)&gt;|$)</code>
-匹配email: <a href="mailto:`aa@gmail.com" target="_blank" rel="noopener">`aa@gmail.com</a><code>或</code><a href="mailto:&#97;&#x61;&#64;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#97;&#x61;&#64;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;</a><code>，但不匹配</code>&lt;<a href="mailto:aa@gmail.com" target="_blank" rel="noopener">aa@gmail.com</a>`</p>
+匹配email: <a href="mailto:`aa@gmail.com" target="_blank" rel="noopener">`aa@gmail.com</a><code>或</code><a href="mailto:&#x61;&#x61;&#64;&#x67;&#x6d;&#x61;&#105;&#108;&#x2e;&#x63;&#x6f;&#109;" target="_blank" rel="noopener">&#x61;&#x61;&#64;&#x67;&#x6d;&#x61;&#105;&#108;&#x2e;&#x63;&#x6f;&#109;</a><code>，但不匹配</code>&lt;<a href="mailto:aa@gmail.com" target="_blank" rel="noopener">aa@gmail.com</a>`</p>
 <p>注：上面使用不可捕获组语法(?:.\w+)+，所以这个正则式只有两个group。永远记住上面写过的(?…)不创建分组group</p>
 <h3 id="flags标志"><a href="#flags标志" class="headerlink" title="flags标志"></a>flags标志</h3><p>re模块提供很多flags标志来影响匹配行为</p>
 <p>用法：
@@ -800,11 +790,11 @@ re.S/DOTALL:        .可表示换行符
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/uploads/avatar.jpg"
+                src="/uploads/avatar.png"
                 alt="Yahkun Ding" />
             
               <p class="site-author-name" itemprop="name">Yahkun Ding</p>
-              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+              <p class="site-description motion-element" itemprop="description">Python/Golang/Linux/前端</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1167,7 +1157,7 @@ re.S/DOTALL:        .可表示换行符
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "search.xml";
+    var search_path = "";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {
