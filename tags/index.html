@@ -103,15 +103,15 @@
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
-      userId: '0',
+      userId: 'undefined',
       author: '博主'
     },
     algolia: {
       applicationID: '',
       apiKey: '',
       indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+      hits: "",
+      labels: ""
     }
   };
 </script>
@@ -228,6 +228,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
 
       
         <li class="menu-item menu-item-search">
@@ -247,26 +257,22 @@
   
     <div class="site-search">
       
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
     <span class="popup-btn-close">
       <i class="fa fa-times-circle"></i>
     </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
   </div>
-
+  <div id="local-search-result"></div>
+</div>
 
 
 
@@ -306,7 +312,7 @@
         
           <div class="tag-cloud">
             <div class="tag-cloud-title">
-                目前共计 87 个标签
+                目前共计 86 个标签
             </div>
             <div class="tag-cloud-tags">
               <a href="/tags/AES/" style="font-size: 12px; color: #ccc">AES</a> <a href="/tags/CSRF/" style="font-size: 12px; color: #ccc">CSRF</a> <a href="/tags/EC2/" style="font-size: 12px; color: #ccc">EC2</a> <a href="/tags/JMH/" style="font-size: 12px; color: #ccc">JMH</a> <a href="/tags/RSA/" style="font-size: 12px; color: #ccc">RSA</a> <a href="/tags/SQLAlchemy/" style="font-size: 13.64px; color: #bbb">SQLAlchemy</a> <a href="/tags/SQL注入/" style="font-size: 12px; color: #ccc">SQL注入</a> <a href="/tags/XSS/" style="font-size: 12px; color: #ccc">XSS</a> <a href="/tags/ajax/" style="font-size: 12px; color: #ccc">ajax</a> <a href="/tags/angular/" style="font-size: 12px; color: #ccc">angular</a> <a href="/tags/awk/" style="font-size: 12px; color: #ccc">awk</a> <a href="/tags/axis2/" style="font-size: 12px; color: #ccc">axis2</a> <a href="/tags/bind9/" style="font-size: 12px; color: #ccc">bind9</a> <a href="/tags/cache/" style="font-size: 12px; color: #ccc">cache</a> <a href="/tags/ceph/" style="font-size: 12px; color: #ccc">ceph</a> <a href="/tags/cookie/" style="font-size: 12px; color: #ccc">cookie</a> <a href="/tags/django/" style="font-size: 26.73px; color: #333">django</a> <a href="/tags/dns/" style="font-size: 12px; color: #ccc">dns</a> <a href="/tags/docker/" style="font-size: 23.45px; color: #555">docker</a> <a href="/tags/echarts/" style="font-size: 12px; color: #ccc">echarts</a> <a href="/tags/form/" style="font-size: 12px; color: #ccc">form</a> <a href="/tags/gevent/" style="font-size: 12px; color: #ccc">gevent</a> <a href="/tags/git/" style="font-size: 21.82px; color: #666">git</a> <a href="/tags/gitbook/" style="font-size: 12px; color: #ccc">gitbook</a> <a href="/tags/github/" style="font-size: 12px; color: #ccc">github</a> <a href="/tags/gradle/" style="font-size: 12px; color: #ccc">gradle</a> <a href="/tags/hadoop/" style="font-size: 12px; color: #ccc">hadoop</a> <a href="/tags/hexo/" style="font-size: 12px; color: #ccc">hexo</a> <a href="/tags/http/" style="font-size: 12px; color: #ccc">http</a> <a href="/tags/https/" style="font-size: 13.64px; color: #bbb">https</a> <a href="/tags/java/" style="font-size: 20.18px; color: #777">java</a> <a href="/tags/jenkins/" style="font-size: 16.91px; color: #999">jenkins</a> <a href="/tags/jetty9/" style="font-size: 12px; color: #ccc">jetty9</a> <a href="/tags/jinja2/" style="font-size: 12px; color: #ccc">jinja2</a> <a href="/tags/jrebel/" style="font-size: 12px; color: #ccc">jrebel</a> <a href="/tags/json/" style="font-size: 12px; color: #ccc">json</a> <a href="/tags/jwt/" style="font-size: 13.64px; color: #bbb">jwt</a> <a href="/tags/keepalived/" style="font-size: 12px; color: #ccc">keepalived</a> <a href="/tags/license/" style="font-size: 12px; color: #ccc">license</a> <a href="/tags/markdown/" style="font-size: 12px; color: #ccc">markdown</a> <a href="/tags/maven/" style="font-size: 12px; color: #ccc">maven</a> <a href="/tags/memcached/" style="font-size: 13.64px; color: #bbb">memcached</a> <a href="/tags/mqtt/" style="font-size: 12px; color: #ccc">mqtt</a> <a href="/tags/mysql/" style="font-size: 15.27px; color: #aaa">mysql</a> <a href="/tags/nexus/" style="font-size: 12px; color: #ccc">nexus</a> <a href="/tags/nginx/" style="font-size: 16.91px; color: #999">nginx</a> <a href="/tags/ngrok/" style="font-size: 12px; color: #ccc">ngrok</a> <a href="/tags/oauth/" style="font-size: 12px; color: #ccc">oauth</a> <a href="/tags/osgi/" style="font-size: 12px; color: #ccc">osgi</a> <a href="/tags/parted/" style="font-size: 12px; color: #ccc">parted</a> <a href="/tags/pyenv/" style="font-size: 12px; color: #ccc">pyenv</a> <a href="/tags/python/" style="font-size: 18.55px; color: #888">python</a> <a href="/tags/python核心/" style="font-size: 28.36px; color: #222">python核心</a> <a href="/tags/rabbitmq/" style="font-size: 23.45px; color: #555">rabbitmq</a> <a href="/tags/readthedocs/" style="font-size: 12px; color: #ccc">readthedocs</a> <a href="/tags/redis/" style="font-size: 15.27px; color: #aaa">redis</a> <a href="/tags/scrapy/" style="font-size: 25.09px; color: #444">scrapy</a> <a href="/tags/sed/" style="font-size: 12px; color: #ccc">sed</a> <a href="/tags/servlet/" style="font-size: 12px; color: #ccc">servlet</a> <a href="/tags/session/" style="font-size: 12px; color: #ccc">session</a> <a href="/tags/sitemesh/" style="font-size: 12px; color: #ccc">sitemesh</a> <a href="/tags/sphinx/" style="font-size: 12px; color: #ccc">sphinx</a> <a href="/tags/spring/" style="font-size: 12px; color: #ccc">spring</a> <a href="/tags/springboot/" style="font-size: 30px; color: #111">springboot</a> <a href="/tags/squid/" style="font-size: 12px; color: #ccc">squid</a> <a href="/tags/supervisor/" style="font-size: 12px; color: #ccc">supervisor</a> <a href="/tags/swagger/" style="font-size: 12px; color: #ccc">swagger</a> <a href="/tags/systemd/" style="font-size: 12px; color: #ccc">systemd</a> <a href="/tags/token/" style="font-size: 12px; color: #ccc">token</a> <a href="/tags/uwsgi/" style="font-size: 12px; color: #ccc">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 12px; color: #ccc">vagrant</a> <a href="/tags/vim/" style="font-size: 12px; color: #ccc">vim</a> <a href="/tags/websocket/" style="font-size: 13.64px; color: #bbb">websocket</a> <a href="/tags/werkzeug/" style="font-size: 12px; color: #ccc">werkzeug</a> <a href="/tags/wireshark/" style="font-size: 12px; color: #ccc">wireshark</a> <a href="/tags/wsgi/" style="font-size: 12px; color: #ccc">wsgi</a> <a href="/tags/xpath/" style="font-size: 12px; color: #ccc">xpath</a> <a href="/tags/yaml/" style="font-size: 12px; color: #ccc">yaml</a> <a href="/tags/yum/" style="font-size: 12px; color: #ccc">yum</a> <a href="/tags/ztree/" style="font-size: 12px; color: #ccc">ztree</a> <a href="/tags/小程序/" style="font-size: 15.27px; color: #aaa">小程序</a> <a href="/tags/微信支付/" style="font-size: 12px; color: #ccc">微信支付</a> <a href="/tags/架构/" style="font-size: 12px; color: #ccc">架构</a> <a href="/tags/笑话/" style="font-size: 12px; color: #ccc">笑话</a> <a href="/tags/算法/" style="font-size: 18.55px; color: #888">算法</a> <a href="/tags/负载均衡/" style="font-size: 13.64px; color: #bbb">负载均衡</a>
@@ -391,7 +397,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -657,6 +663,11 @@
 <!-- END LOCAL -->
 
     
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
 
     
 
@@ -668,20 +679,324 @@
 
   
 
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
 
 
-
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
 
 
 
