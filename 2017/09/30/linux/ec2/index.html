@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="EC2," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="作为一个离开 Google 生活就无法自理的人类，我曾经发帖、提问、翻遍各种网站，四处寻找靠谱的科学上网利器。 网上也买过好多，自己也用过一些开源免费的proxy，最后都会出现各种莫名其妙的问题，各种不稳定。 最后我选择自己动手，丰衣足食，利用EC2虚拟主机搭建SS，这个东东是由 Clowwindy 开发的一款软件， 其作用本来是加密传输资料。当然，也正因为它加密传输资料的特性，使得XXX没法将由">
+<meta name="keywords" content="EC2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EC2虚拟主机搭建SS">
+<meta property="og:url" content="http://yoursite.com/2017/09/30/linux/ec2/index.html">
+<meta property="og:site_name" content="秦时明月">
+<meta property="og:description" content="作为一个离开 Google 生活就无法自理的人类，我曾经发帖、提问、翻遍各种网站，四处寻找靠谱的科学上网利器。 网上也买过好多，自己也用过一些开源免费的proxy，最后都会出现各种莫名其妙的问题，各种不稳定。 最后我选择自己动手，丰衣足食，利用EC2虚拟主机搭建SS，这个东东是由 Clowwindy 开发的一款软件， 其作用本来是加密传输资料。当然，也正因为它加密传输资料的特性，使得XXX没法将由">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss01.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss02.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss03.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss05.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss06.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss07.png">
+<meta property="og:updated_time" content="2018-09-17T20:22:55.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EC2虚拟主机搭建SS">
+<meta name="twitter:description" content="作为一个离开 Google 生活就无法自理的人类，我曾经发帖、提问、翻遍各种网站，四处寻找靠谱的科学上网利器。 网上也买过好多，自己也用过一些开源免费的proxy，最后都会出现各种莫名其妙的问题，各种不稳定。 最后我选择自己动手，丰衣足食，利用EC2虚拟主机搭建SS，这个东东是由 Clowwindy 开发的一款软件， 其作用本来是加密传输资料。当然，也正因为它加密传输资料的特性，使得XXX没法将由">
+<meta name="twitter:image" content="https://xnstatic-1253397658.file.myqcloud.com/ss01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/30/linux/ec2/"/>
+
+
+
+
+
+  <title>EC2虚拟主机搭建SS | 秦时明月</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦时明月</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code the world, trave the world.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/30/linux/ec2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yahkun Ding">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦时明月">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">EC2虚拟主机搭建SS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-30T17:29:33+08:00">
+                2017-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/30/linux/ec2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/09/30/linux/ec2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,505 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作为一个离开 Google 生活就无法自理的人类，我曾经发帖、提问、翻遍各种网站，四处寻找靠谱的科学上网利器。
+网上也买过好多，自己也用过一些开源免费的proxy，最后都会出现各种莫名其妙的问题，各种不稳定。</p>
+<p>最后我选择自己动手，丰衣足食，利用EC2虚拟主机搭建SS，这个东东是由 <a href="https://github.com/Clowwindy" target="_blank" rel="noopener">Clowwindy</a> 开发的一款软件，
+其作用本来是加密传输资料。当然，也正因为它加密传输资料的特性，使得XXX没法将由它传输的资料和其他普通资料区分开来，
+也就不能干扰我们访问那些「不存在」的网站了。</p>
+<p>如果你希望不花钱就能用上优质的服务──醒醒，别做梦了，免费和优质从来不可能划上等号。
+不过想要共享或建立多账户来出售的话，能赚钱也说不定🙃 <a id="more"></a></p>
+<h2 id="创建EC2虚拟主机"><a href="#创建EC2虚拟主机" class="headerlink" title="创建EC2虚拟主机"></a>创建EC2虚拟主机</h2><p>先去亚马逊AWS上面注册一个账号：<a href="https://amazonaws-china.com/cn/" target="_blank" rel="noopener">https://amazonaws-china.com/cn/</a></p>
+<p>登录后进入EC2的控制台，然后在右上角区域里面切换至东京，
+选择左边的”实例” ——&gt; 启动实例 ——&gt; AWS Marketplace ——&gt; 搜索”centos7”，目前最新的版本是CentOS7.4</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/ss01.png" alt=""></p>
+<p>然后点击”continue”，默认选中符合条件的免费套餐。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/ss02.png" alt=""></p>
+<p>然后点击”审核和启动”，这里编辑一下安全组信息，创建一个新安全组，类型里面选择”所有流量”即可。</p>
+<p>启动之后，回到实例的界面，然后点击”连接”，复制上面的实例名</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/ss03.png" alt=""></p>
+<p>然后用xshell工具来连接，主机名选择上面实例详情的名称，使用密钥对来登录，用户名选择centos即可。</p>
+<h2 id="部署SS"><a href="#部署SS" class="headerlink" title="部署SS"></a>部署SS</h2><p>好了，现在开始正式部署ss了，这里使用 <a href="https://teddysun.com/342.html" target="_blank" rel="noopener">teddysun</a> 的一键安装脚本。</p>
+<p>先切换到root用户，可使用 <code>sudo passwd root</code> 先修改root密码，然后执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh</span><br><span class="line">chmod +x shadowsocks.sh</span><br><span class="line">./shadowsocks.sh 2&gt;&amp;1 | tee shadowsocks.log</span><br></pre></td></tr></table></figure>
+<p>按照提示来，最后成功界面如下：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/ss05.png" alt=""></p>
+<p>请把这些信息复制下来。</p>
+<h2 id="TCP-Fast-Open"><a href="#TCP-Fast-Open" class="headerlink" title="TCP Fast Open"></a>TCP Fast Open</h2><p>实际上只要具备上述四个信息，你就可以在自己的任意设备上进行登录使用了。但是为了更好的连接速度，你还需要多做几步。</p>
+<p>首先是打开 TCP Fast Open，<code>vi /etc/rc.local</code> ，在最后增加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 3 &gt; /proc/sys/net/ipv4/tcp_fastopen</span><br></pre></td></tr></table></figure>
+<p>然后修改<code>/etc/sysctl.conf</code>，在最后增加如下内容：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_fastopen = 3</span><br></pre></td></tr></table></figure></p>
+<p>再打开一个 Shadowsocks 配置文件，编辑<code>/etc/shadowsocks.json</code>，修改如下：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;fast_open&quot;:true</span><br></pre></td></tr></table></figure></p>
+<p>最后，输入以下命令重启 Shadowsocks：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/shadowsocks restart</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装SS客户端"><a href="#安装SS客户端" class="headerlink" title="安装SS客户端"></a>安装SS客户端</h2><p>相比服务器端的安装，客户端的安装就简单了许多。首先，根据操作系统下载相应的客户端。</p>
+<p><a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="noopener">Win 版客户端下载</a></p>
+<p>打开客户端，在「服务器设定」里新增服务器。然后依次填入服务器 IP、服务器端口、你设的密码和加密方式。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/ss06.png" alt=""></p>
+<p>然后点击”启用系统代理”，选择PAC模式，在PAC中选择从xxx更新本地PAC，就可以实现科学上网了。</p>
+<h2 id="开启锐速"><a href="#开启锐速" class="headerlink" title="开启锐速"></a>开启锐速</h2><p><a href="https://github.com/91yun/serverspeeder" target="_blank" rel="noopener">锐速</a> 是一个 TCP 加速软件，对 Shadowsocks 客户端和服务器端间的传输速度有显著提升。</p>
+<p>「锐速」的一大优势是只需要在服务器端单边部署就行了，换句话说，你不需要再安装另外一个应用。</p>
+<p>一键安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh &amp;&amp; bash serverspeeder.sh</span><br></pre></td></tr></table></figure>
+<p>安装上面官网的的安装步骤执行一键安装脚本会出现如下的错误信息：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">前面的省略...</span><br><span class="line">Complete!</span><br><span class="line">=================================================</span><br><span class="line">操作系统：CentOS </span><br><span class="line">发行版本：7.4 </span><br><span class="line">内核版本：3.10.0-693.el7.x86_64 </span><br><span class="line">位数：x64 </span><br><span class="line">锐速版本：3.10.61.0 </span><br><span class="line">=================================================</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100 96179  100 96179    0     0  77305      0  0:00:01  0:00:01 --:--:-- 77314</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">锐速暂不支持该内核，程序退出.自动安装判断比较严格，你可以到http://www.91yun.org/serverspeeder91yun手动下载安装文件尝试不同版本</span><br></pre></td></tr></table></figure></p>
+<p>锐速只能适配几个特定的内核，我现在的CentOS7.4内核并不支持，那么就需要修改内核来适配了。具体步骤如下</p>
+<p><strong>改核适配锐速</strong></p>
+<h3 id="监测VPS架构"><a href="#监测VPS架构" class="headerlink" title="监测VPS架构"></a>监测VPS架构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/code/master/vm_check.sh &amp;&amp; bash vm_check.sh</span><br></pre></td></tr></table></figure>
+<p>如果是kvm还是xen或者vmare则可以装锐速，如果是Openvz，则不可装锐速。</p>
+<h3 id="Centos6安装内核（推荐使用）"><a href="#Centos6安装内核（推荐使用）" class="headerlink" title="Centos6安装内核（推荐使用）"></a>Centos6安装内核（推荐使用）</h3><p>CentOS 6支持安装锐速的内核：2.6.32–504.3.3.el6.x86_64</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">uname -r <span class="comment">#查看当前内核版本</span></span><br><span class="line">rpm -ivh http://xz.wn789.com/CentOSkernel/kernel-firmware-2.6.32-504.3.3.el6.noarch.rpm</span><br><span class="line">rpm -ivh http://xz.wn789.com/CentOSkernel/kernel-2.6.32-504.3.3.el6.x86_64.rpm --force</span><br><span class="line">rpm -qa | grep kernel <span class="comment">#查看是否安装成功</span></span><br><span class="line">reboot <span class="comment">#重启VPS</span></span><br><span class="line">uname -r <span class="comment">#当前使用内核版本</span></span><br></pre></td></tr></table></figure>
+<h3 id="Centos7安装内核（不太推荐）"><a href="#Centos7安装内核（不太推荐）" class="headerlink" title="Centos7安装内核（不太推荐）"></a>Centos7安装内核（不太推荐）</h3><p>CentOS 7支持安装锐速的内核：3.10.0-327.el7.x86_64</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install -y linux-firmware</span><br><span class="line">rpm -ivh http://xz.wn789.com/CentOSkernel/kernel-3.10.0-229.1.2.el7.x86_64.rpm --force</span><br><span class="line">rpm -qa | grep kernel <span class="comment">#查看内核是否安装成功</span></span><br><span class="line">reboot <span class="comment">#重启VPS</span></span><br><span class="line">uname -r <span class="comment">#当前使用内核版本</span></span><br></pre></td></tr></table></figure>
+<p>锐速针对Centos 7的版本较少，推荐在Centos 6中安装。</p>
+<p>成功界面如下，看到license信息过期时间为”2034-12-31”就没问题了。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/ss07.png" alt=""></p>
+<h3 id="部署锐速"><a href="#部署锐速" class="headerlink" title="部署锐速"></a>部署锐速</h3><p>依然使用一键安装脚本，输入以下命令：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/serverspeeder/master/serverspeeder-all.sh &amp;&amp; bash serverspeeder-all.sh</span><br></pre></td></tr></table></figure></p>
+<p>安装需要一段时间，等待一会。</p>
+<p>至此，整个搭建过程就大功告成了！接下来，尽情地享受起飞的速度吧😄</p>
+<hr>
+<p>参考文章</p>
+<ul>
+<li><a href="https://zoomyale.com/2016/vultr_and_ss/" target="_blank" rel="noopener">科学上网的终极姿势</a></li>
+<li><a href="http://www.topchinaz.com/centos-%E6%94%B9%E6%A0%B8%E9%80%82%E9%85%8D%E9%94%90%E9%80%9F%EF%BC%88digitalocean-centos7-4%EF%BC%89/" target="_blank" rel="noopener">CentOS改核适配锐速</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/EC2/" rel="tag"># EC2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/21/java/watchservice/" rel="next" title="使用WatchService监听文件变化">
+                <i class="fa fa-chevron-left"></i> 使用WatchService监听文件变化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/29/tool/jrebel/" rel="prev" title="IDEA集成JRebel热部署和远程调试">
+                IDEA集成JRebel热部署和远程调试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="Yahkun Ding" />
+            
+              <p class="site-author-name" itemprop="name">Yahkun Ding</p>
+              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">186</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yahkun" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yahkun@foxmail.com" target="_blank" title="E-mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list" style="list-style: none;">
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.infoq.com/cn/" title="InfoQ" target="_blank">InfoQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://blog.jobbole.com/" title="伯乐在线" target="_blank">伯乐在线</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建EC2虚拟主机"><span class="nav-number">1.</span> <span class="nav-text">创建EC2虚拟主机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署SS"><span class="nav-number">2.</span> <span class="nav-text">部署SS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-Fast-Open"><span class="nav-number">3.</span> <span class="nav-text">TCP Fast Open</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装SS客户端"><span class="nav-number">4.</span> <span class="nav-text">安装SS客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启锐速"><span class="nav-number">5.</span> <span class="nav-text">开启锐速</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监测VPS架构"><span class="nav-number">5.1.</span> <span class="nav-text">监测VPS架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Centos6安装内核（推荐使用）"><span class="nav-number">5.2.</span> <span class="nav-text">Centos6安装内核（推荐使用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Centos7安装内核（不太推荐）"><span class="nav-number">5.3.</span> <span class="nav-text">Centos7安装内核（不太推荐）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署锐速"><span class="nav-number">5.4.</span> <span class="nav-text">部署锐速</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yahkun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">361.2k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">粤ICP备17025554号-1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yahkun',
+            repo: 'comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '56fd98792841961d31a92ce3a2b5ba36e7bc2f17',
+            
+                client_id: '608d980b75fc48a1873e'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

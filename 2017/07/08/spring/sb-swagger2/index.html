@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="springboot," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Swagger是一个简单但功能强大的API表达工具。它具有地球上最大的API工具生态系统，数以千计的开发人员， 使用几乎所有的现代编程语言，都在支持和使用Swagger。使用Swagger生成API，我们可以得到交互式文档， 自动生成代码的SDK以及API的发现特性等。 Swagger2可以利用注解快速、自动地生成接口文档页面，方便调用方查阅！ 这一篇讲解如何在Spring Boot中集成Swag">
+<meta name="keywords" content="springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot系列 - 集成Swagger2">
+<meta property="og:url" content="http://yoursite.com/2017/07/08/spring/sb-swagger2/index.html">
+<meta property="og:site_name" content="秦时明月">
+<meta property="og:description" content="Swagger是一个简单但功能强大的API表达工具。它具有地球上最大的API工具生态系统，数以千计的开发人员， 使用几乎所有的现代编程语言，都在支持和使用Swagger。使用Swagger生成API，我们可以得到交互式文档， 自动生成代码的SDK以及API的发现特性等。 Swagger2可以利用注解快速、自动地生成接口文档页面，方便调用方查阅！ 这一篇讲解如何在Spring Boot中集成Swag">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger01.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger02.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger03.png">
+<meta property="og:updated_time" content="2018-09-17T20:22:55.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot系列 - 集成Swagger2">
+<meta name="twitter:description" content="Swagger是一个简单但功能强大的API表达工具。它具有地球上最大的API工具生态系统，数以千计的开发人员， 使用几乎所有的现代编程语言，都在支持和使用Swagger。使用Swagger生成API，我们可以得到交互式文档， 自动生成代码的SDK以及API的发现特性等。 Swagger2可以利用注解快速、自动地生成接口文档页面，方便调用方查阅！ 这一篇讲解如何在Spring Boot中集成Swag">
+<meta name="twitter:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/08/spring/sb-swagger2/"/>
+
+
+
+
+
+  <title>SpringBoot系列 - 集成Swagger2 | 秦时明月</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦时明月</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code the world, trave the world.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/08/spring/sb-swagger2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yahkun Ding">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦时明月">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot系列 - 集成Swagger2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T15:26:19+08:00">
+                2017-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/08/spring/sb-swagger2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/07/08/spring/sb-swagger2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,254 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Swagger是一个简单但功能强大的API表达工具。它具有地球上最大的API工具生态系统，数以千计的开发人员，
+使用几乎所有的现代编程语言，都在支持和使用Swagger。使用Swagger生成API，我们可以得到交互式文档，
+自动生成代码的SDK以及API的发现特性等。</p>
+<p>Swagger2可以利用注解快速、自动地生成接口文档页面，方便调用方查阅！</p>
+<p>这一篇讲解如何在Spring Boot中集成Swagger2.<a id="more"></a></p>
+<p>先来张效果图：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger01.png" alt=""></p>
+<p>可以看到Swagger-Ui是以controller分类,点击一个controller可以看到其中的具体接口,再点击接口就可以看到接口的信息了,如图:</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger02.png" alt=""></p>
+<p>我们可以看到该接口的请求方式,返回数据信息和需要传递的参数.而且以上数据是自动生成的,即使代码有一些修改,
+Swagger文档也会自动同步修改.非常的方便。</p>
+<h2 id="构建RESTful-API"><a href="#构建RESTful-API" class="headerlink" title="构建RESTful API"></a>构建RESTful API</h2><p>在使用Swagger2前我们需要有一个RESTful API的项目，Spring Boot创建RESTful API项目非常的方便和快速。</p>
+<p>Spring Boot构建RESTful API极为简单，实际就是Spring MVC。</p>
+<p>比如我的机具管理API如下，提供了3个接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/traffic"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> OutTrafficService ts;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断该账户是否存在于交警6合1系统</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> req</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/checkAccount"</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;AccountResponse&gt; <span class="title">checkTrafficAccount</span><span class="params">(@RequestBody TrafficAccountReq req)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"检查用户账号接口 start..."</span>);</span><br><span class="line">        AccountResponse result = ts.checkTrafficAccount(req);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(result, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据业务流水号获取机动车缴款信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> req</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/jdcPayInfo"</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;JDCPayInfoResponse&gt; <span class="title">getJDCPayInfo</span><span class="params">(@RequestBody TrafficPayJDCReq req)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"获取机动车缴款信息接口 start..."</span>);</span><br><span class="line">        JDCPayInfoResponse result = ts.getJDCPayinfo(req);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(result, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据身份证获取缴款信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> req</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/jsrPayInfo"</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;JSZPayInfoResponse&gt; <span class="title">getJSZPayinfo</span><span class="params">(@RequestBody TrafficPayJSZReq req)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"获取驾驶证缴款信息接口 start..."</span>);</span><br><span class="line">        JSZPayInfoResponse result = ts.getJSZPayinfo(req);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(result, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取整个管理部门信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/departmentInfo"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;DepartmentInfoResponse&gt; <span class="title">getDepartmentinfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"获取整个管理部门信息 start..."</span>);</span><br><span class="line">        DepartmentInfoResponse result = ts.getDepartmentinfo();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(result, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="添加Swagger2依赖"><a href="#添加Swagger2依赖" class="headerlink" title="添加Swagger2依赖"></a>添加Swagger2依赖</h2><p>maven依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- swagger2 集成--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我自己也定制过一个ui，github地址：<a href="https://github.com/yidao620c/springfox-swagger-ui" target="_blank" rel="noopener">https://github.com/yidao620c/springfox-swagger-ui</a></p>
+<h2 id="创建Swagger2的Java配置类"><a href="#创建Swagger2的Java配置类" class="headerlink" title="创建Swagger2的Java配置类"></a>创建Swagger2的Java配置类</h2><p>通过<code>@Configuration</code>注解，表明它是一个配置类，<code>@EnableSwagger2</code> 注解开启swagger2。
+<code>apiInfo()</code> 方法配置一些基本的信息。<code>createRestApi()</code> 方法指定扫描的包会生成文档，
+默认是显示所有接口,可以用<code>@ApiIgnore</code>注解标识该接口不显示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .produces(Sets.newHashSet(<span class="string">"application/json"</span>))</span><br><span class="line">                .consumes(Sets.newHashSet(<span class="string">"application/json"</span>))</span><br><span class="line">                .protocols(Sets.newHashSet(<span class="string">"http"</span>, <span class="string">"https"</span>))</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .forCodeGeneration(<span class="keyword">true</span>)</span><br><span class="line">                .useDefaultResponseMessages(<span class="keyword">false</span>)</span><br><span class="line">                .select()</span><br><span class="line">                <span class="comment">// 指定controller存放的目录路径</span></span><br><span class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">"com.xncoding.modules.traffic.controller"</span>))</span><br><span class="line"><span class="comment">//                .paths(PathSelectors.ant("/api/v1/*"))</span></span><br><span class="line">                .paths(PathSelectors.any())</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">                <span class="comment">// 文档标题</span></span><br><span class="line">                .title(<span class="string">"XX系统API服务"</span>)</span><br><span class="line">                <span class="comment">// 文档描述</span></span><br><span class="line">                .description(<span class="string">"XX系统API接口文档简要描述"</span>)</span><br><span class="line">                <span class="comment">// .termsOfServiceUrl("https://github.com/yidao620c")</span></span><br><span class="line">                .version(<span class="string">"v1"</span>)</span><br><span class="line">                .license(<span class="string">"MIT 协议"</span>)</span><br><span class="line">                .licenseUrl(<span class="string">"http://www.opensource.org/licenses/MIT"</span>)</span><br><span class="line">                .contact(<span class="keyword">new</span> Contact(<span class="string">"熊能"</span>, <span class="string">"https://github.com/yidao620c"</span>, <span class="string">"yidao620@gmail.com"</span>))</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="添加Swagger2注解"><a href="#添加Swagger2注解" class="headerlink" title="添加Swagger2注解"></a>添加Swagger2注解</h2><p>通过在接口上面添加注解方式可配置丰富接口的信息，先看一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Api</span>(value = <span class="string">"交警业务接口类"</span>, tags = <span class="string">"交警6合1业务接口"</span>, description = <span class="string">"主要任务和交警的专网通信"</span>)</span><br><span class="line"><span class="meta">@ApiResponses</span>(value = &#123;</span><br><span class="line">        <span class="meta">@ApiResponse</span>(code = <span class="number">200</span>, message = <span class="string">"请求正常完成"</span>),</span><br><span class="line">        <span class="meta">@ApiResponse</span>(code = <span class="number">400</span>, message = <span class="string">"请求中有语法问题，或不能满足请求"</span>),</span><br><span class="line"><span class="comment">//        @ApiResponse(code = 401, message = "未授权客户机访问数据"),</span></span><br><span class="line"><span class="comment">//        @ApiResponse(code = 403, message = "服务器接受请求，但是拒绝处理"),</span></span><br><span class="line"><span class="comment">//        @ApiResponse(code = 404, message = "服务器找不到给定的资源，文档不存在"),</span></span><br><span class="line">        <span class="meta">@ApiResponse</span>(code = <span class="number">500</span>, message = <span class="string">"服务器出现异常"</span>)&#125;</span><br><span class="line">)</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/traffic"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> OutTrafficService ts;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断该账户是否存在于交警6合1系统</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> req</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"检查用户账号接口"</span>, notes = <span class="string">"检查该用户是否在6合1系统中存在"</span>, produces = <span class="string">"application/json"</span>)</span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/checkAccount"</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;AccountResponse&gt; <span class="title">checkTrafficAccount</span><span class="params">(@RequestBody TrafficAccountReq req)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"检查用户账号接口 start..."</span>);</span><br><span class="line">        AccountResponse result = ts.checkTrafficAccount(req);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(result, HttpStatus.OK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Swagger2提供了一些注解来丰富接口的信息,常用的有:</p>
+<p>说明：</p>
+<ul>
+<li>@Api：用在类上，说明该类的作用</li>
+<li>@ApiOperation：用在方法上，说明方法的作用</li>
+<li>@ApiImplicitParams：用在方法上包含一组参数说明</li>
+<li>@ApiImplicitParam：用在@ApiImplicitParams注解中，指定一个请求参数的各个方面<ul>
+<li>paramType：参数放在哪个地方<ul>
+<li>header–&gt;请求参数的获取：@RequestHeader</li>
+<li>query–&gt;请求参数的获取：@RequestParam</li>
+<li>path（用于restful接口）–&gt;请求参数的获取：@PathVariable</li>
+<li>body（不常用）</li>
+<li>form（不常用）</li>
+</ul>
+</li>
+<li>name：参数名</li>
+<li>dataType：参数类型</li>
+<li>required：参数是否必须传</li>
+<li>value：参数的意思</li>
+<li>defaultValue：参数的默认值</li>
+</ul>
+</li>
+<li>@ApiResponses：用于表示一组响应</li>
+<li>@ApiResponse：用在@ApiResponses中，一般用于表达一个错误的响应信息<ul>
+<li>code：数字，例如400</li>
+<li>message：信息，例如”请求参数没填好”</li>
+<li>response：抛出异常的类</li>
+</ul>
+</li>
+<li>@ApiModel：描述一个Model的信息（这种一般用在post创建的时候，使用@RequestBody这样的场景，请求参数无法使用@ApiImplicitParam注解进行描述的时候）</li>
+<li>@ApiModelProperty：描述一个model的属性</li>
+</ul>
+<p>以上这些就是最常用的几个注解了。</p>
+<p>具体其他的注解，查看：</p>
+<p><a href="https://github.com/swagger-api/swagger-core/wiki/Annotations#apimodel" target="_blank" rel="noopener">https://github.com/swagger-api/swagger-core/wiki/Annotations#apimodel</a></p>
+<p>更多请参考<a href="http://docs.swagger.io/swagger-core/apidocs/com/wordnik/swagger/annotations/package-summary.html" target="_blank" rel="noopener">Swagger注解文档</a></p>
+<h2 id="与Shiro集成配置"><a href="#与Shiro集成配置" class="headerlink" title="与Shiro集成配置"></a>与Shiro集成配置</h2><p>注意如果Spring Boot使用过Shiro或Spring Security框架，需要将相应的URL访问权限放开，以Shiro为例，添加匿名访问过滤器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">filterChainDefinitionMap.put(<span class="string">"/api/v1/**"</span>, <span class="string">"anon"</span>); <span class="comment">//API接口</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// swagger接口文档</span></span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/v2/api-docs"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/webjars/**"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/swagger-resources/**"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/swagger-ui.html"</span>, <span class="string">"anon"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="访问SwaggerUI"><a href="#访问SwaggerUI" class="headerlink" title="访问SwaggerUI"></a>访问SwaggerUI</h2><p>访问<code>http://localhost:8080/swagger-ui.html</code>页面查看API文档</p>
+<p>如果使用的是<code>swagger-bootstrap-ui</code>，请访问<code>http://localhost:8080/doc.html</code></p>
+<h2 id="生成PDF文档"><a href="#生成PDF文档" class="headerlink" title="生成PDF文档"></a>生成PDF文档</h2><p>参考我的另一篇文章 <a href="https://www.xncoding.com/2017/06/09/web/swagger.html" target="_blank" rel="noopener">使用Swagger生成RESTful API文档</a></p>
+<p>这里我通过SpringBoot + Swagger2方式来生成AsciiDoc，然后剩下的步骤和上面博客一样。</p>
+<h3 id="maven依赖"><a href="#maven依赖" class="headerlink" title="maven依赖"></a>maven依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.pegdown<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pegdown<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.swagger2markup<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>swagger2markup<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>另外修改下surefire插件，增加2个系统属性，也就是swagger.json和adoc文件生成的位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.20&lt;/version&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;systemPropertyVariables&gt;</span><br><span class="line">            &lt;swaggerOutputDir&gt;$&#123;project.basedir&#125;/src/main/resources/swagger&lt;/swaggerOutputDir&gt;</span><br><span class="line">            &lt;asciiDocOutputDir&gt;$&#123;project.basedir&#125;/src/main/resources/swagger/swagger&lt;/asciiDocOutputDir&gt;</span><br><span class="line">        &lt;/systemPropertyVariables&gt;</span><br><span class="line">        &lt;skip&gt;true&lt;/skip&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="编写单元测试方法"><a href="#编写单元测试方法" class="headerlink" title="编写单元测试方法"></a>编写单元测试方法</h3><p>原理是通过SpringBoot的MockMvc启动后访问<code>/v2/api-docs</code>，这个是Swagger的接口数据，然后保存为<code>swagger.json</code>，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AutoConfigureMockMvc</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2MarkupTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MockMvc mockMvc;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG = LoggerFactory.getLogger(Swagger2MarkupTest.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createSpringFoxSwaggerJson</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//        String outputDir = System.getProperty("swaggerOutputDir"); // mvn test</span></span><br><span class="line">        MvcResult mvcResult = <span class="keyword">this</span>.mockMvc.perform(get(<span class="string">"/v2/api-docs"</span>)</span><br><span class="line">                .accept(MediaType.APPLICATION_JSON))</span><br><span class="line">                .andExpect(status().isOk())</span><br><span class="line">                .andReturn();</span><br><span class="line">        MockHttpServletResponse response = mvcResult.getResponse();</span><br><span class="line">        String swaggerJson = response.getContentAsString();</span><br><span class="line"><span class="comment">//        Files.createDirectories(Paths.get(outputDir));</span></span><br><span class="line"><span class="comment">//        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputDir, "swagger.json"), StandardCharsets.UTF_8))&#123;</span></span><br><span class="line"><span class="comment">//            writer.write(swaggerJson);</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line">        LOG.info(<span class="string">"--------------------swaggerJson create --------------------"</span>);</span><br><span class="line">        convertAsciidoc(swaggerJson);</span><br><span class="line">        LOG.info(<span class="string">"--------------------swagon.json to asciiDoc finished --------------------"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将swagger.yaml或swagger.json转换成漂亮的 AsciiDoc</span></span><br><span class="line"><span class="comment">     * 访问：http://localhost:9095/v2/api-docs</span></span><br><span class="line"><span class="comment">     * 将页面结果保存为src/main/resources/swagger.json</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">convertAsciidoc</span><span class="params">(String swaggerStr)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        Path localSwaggerFile = Paths.get(System.getProperty("swaggerOutputDir"), "swagger.json");</span></span><br><span class="line">        Path outputFile = Paths.get(System.getProperty(<span class="string">"asciiDocOutputDir"</span>));</span><br><span class="line">        Swagger2MarkupConfig config = <span class="keyword">new</span> Swagger2MarkupConfigBuilder()</span><br><span class="line">                .withMarkupLanguage(MarkupLanguage.ASCIIDOC)</span><br><span class="line">                .withOutputLanguage(Language.ZH)</span><br><span class="line">                .withPathsGroupedBy(GroupBy.TAGS)</span><br><span class="line">                .withGeneratedExamples()</span><br><span class="line">                .withoutInlineSchema()</span><br><span class="line">                .build();</span><br><span class="line">        Swagger2MarkupConverter converter = Swagger2MarkupConverter.from(swaggerStr)</span><br><span class="line">                .withConfig(config)</span><br><span class="line">                .build();</span><br><span class="line">        converter.toFile(outputFile);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行之后会在<code>resources/swagger/</code>下面生成<code>swagger.adoc</code>，在<code>swagger.adoc</code>的顶部加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:toclevels: 3</span><br><span class="line">:numbered:</span><br></pre></td></tr></table></figure>
+<p>注意有个空行分割，目的是左边导航菜单是3级，并且自动加序号。为了美化显示，根据你的需要调整表格宽度，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cols=&quot;.^2,.^3,.^9,.^4,.^2&quot;</span><br></pre></td></tr></table></figure>
+<p>替换成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cols=&quot;.^2,.^3,.^6,.^4,.^5&quot;</span><br></pre></td></tr></table></figure>
+<p>然后在/resources目录下面执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asciidoctor-pdf -r asciidoctor-pdf-cjk-kai_gen_gothic -a pdf-style=KaiGenGothicCN swagger/swagger.adoc</span><br></pre></td></tr></table></figure>
+<p>更详细的安装字体和asciidoctor-pdf命令的方法，请参考上面的博客，将adoc文件转换成好看的PDF。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/sb-swagger03.png" alt=""></p>
+<p><strong>参考文章</strong></p>
+<ul>
+<li><a href="https://github.com/Yuicon/blog/issues/1" target="_blank" rel="noopener">Spring Boot中使用Swagger2构建API文档</a></li>
+<li><a href="https://www.jianshu.com/p/79e6f2dca03b" target="_blank" rel="noopener">Spring Boot 04.构建RESTful API</a></li>
+</ul>
+<h2 id="GitHub源码"><a href="#GitHub源码" class="headerlink" title="GitHub源码"></a>GitHub源码</h2><p><a href="https://github.com/yidao620c/SpringBootBucket/tree/master/springboot-swagger2" target="_blank" rel="noopener">springboot-swagger2</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/07/spring/sb-shiro/" rel="next" title="SpringBoot系列 - 集成Shiro权限管理">
+                <i class="fa fa-chevron-left"></i> SpringBoot系列 - 集成Shiro权限管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/09/spring/sb-jwt/" rel="prev" title="SpringBoot系列 - 集成JWT实现接口权限认证">
+                SpringBoot系列 - 集成JWT实现接口权限认证 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="Yahkun Ding" />
+            
+              <p class="site-author-name" itemprop="name">Yahkun Ding</p>
+              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">186</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yahkun" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yahkun@foxmail.com" target="_blank" title="E-mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list" style="list-style: none;">
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.infoq.com/cn/" title="InfoQ" target="_blank">InfoQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://blog.jobbole.com/" title="伯乐在线" target="_blank">伯乐在线</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建RESTful-API"><span class="nav-number">1.</span> <span class="nav-text">构建RESTful API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Swagger2依赖"><span class="nav-number">2.</span> <span class="nav-text">添加Swagger2依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Swagger2的Java配置类"><span class="nav-number">3.</span> <span class="nav-text">创建Swagger2的Java配置类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Swagger2注解"><span class="nav-number">4.</span> <span class="nav-text">添加Swagger2注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与Shiro集成配置"><span class="nav-number">5.</span> <span class="nav-text">与Shiro集成配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问SwaggerUI"><span class="nav-number">6.</span> <span class="nav-text">访问SwaggerUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成PDF文档"><span class="nav-number">7.</span> <span class="nav-text">生成PDF文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#maven依赖"><span class="nav-number">7.1.</span> <span class="nav-text">maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写单元测试方法"><span class="nav-number">7.2.</span> <span class="nav-text">编写单元测试方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub源码"><span class="nav-number">8.</span> <span class="nav-text">GitHub源码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yahkun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">361.2k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">粤ICP备17025554号-1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yahkun',
+            repo: 'comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '56fd98792841961d31a92ce3a2b5ba36e7bc2f17',
+            
+                client_id: '608d980b75fc48a1873e'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

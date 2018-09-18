@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="springboot," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="内存的速度远远大于硬盘的速度，当我们需要重复获取相同的数据的时候，一次又一次的请求数据库或远程服务， 导致大量时间都消耗在数据库查询或远程方法调用上面，性能下降，这时候就需要使用到缓存技术了。 本文介绍SpringBoot 如何使用redis做缓存，如何对redis缓存进行定制化配置(如key的有效期)以及初始化redis做缓存。 使用具体的代码介绍了@Cacheable，@CacheEvict，">
+<meta name="keywords" content="springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot系列 - 缓存">
+<meta property="og:url" content="http://yoursite.com/2017/07/28/spring/sb-cache/index.html">
+<meta property="og:site_name" content="秦时明月">
+<meta property="og:description" content="内存的速度远远大于硬盘的速度，当我们需要重复获取相同的数据的时候，一次又一次的请求数据库或远程服务， 导致大量时间都消耗在数据库查询或远程方法调用上面，性能下降，这时候就需要使用到缓存技术了。 本文介绍SpringBoot 如何使用redis做缓存，如何对redis缓存进行定制化配置(如key的有效期)以及初始化redis做缓存。 使用具体的代码介绍了@Cacheable，@CacheEvict，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-17T20:22:55.621Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot系列 - 缓存">
+<meta name="twitter:description" content="内存的速度远远大于硬盘的速度，当我们需要重复获取相同的数据的时候，一次又一次的请求数据库或远程服务， 导致大量时间都消耗在数据库查询或远程方法调用上面，性能下降，这时候就需要使用到缓存技术了。 本文介绍SpringBoot 如何使用redis做缓存，如何对redis缓存进行定制化配置(如key的有效期)以及初始化redis做缓存。 使用具体的代码介绍了@Cacheable，@CacheEvict，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/28/spring/sb-cache/"/>
+
+
+
+
+
+  <title>SpringBoot系列 - 缓存 | 秦时明月</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦时明月</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code the world, trave the world.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/28/spring/sb-cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yahkun Ding">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦时明月">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot系列 - 缓存</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-28T20:12:33+08:00">
+                2017-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/28/spring/sb-cache/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/07/28/spring/sb-cache/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,846 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>内存的速度远远大于硬盘的速度，当我们需要重复获取相同的数据的时候，一次又一次的请求数据库或远程服务，
+导致大量时间都消耗在数据库查询或远程方法调用上面，性能下降，这时候就需要使用到缓存技术了。</p>
+<p>本文介绍SpringBoot 如何使用redis做缓存，如何对redis缓存进行定制化配置(如key的有效期)以及初始化redis做缓存。
+使用具体的代码介绍了@Cacheable，@CacheEvict，@CachePut，@CacheConfig等注解及其属性的用法。<a id="more"></a></p>
+<h2 id="Spring缓存支持"><a href="#Spring缓存支持" class="headerlink" title="Spring缓存支持"></a>Spring缓存支持</h2><p>Spring定义了<code>org.springframework.cache.CacheManager</code> 和 <code>org.springframework.cache.Cache</code> 接口来统一不同缓存技术。
+其中CacheManager是Spring提供的各种缓存技术抽象接口，内部使用Cache接口进行缓存的增删改查操作，我们一般不会直接和Cache打交道。</p>
+<p>针对不同的缓存技术，Spring有不同的CacheManager实现类，定义如下表：</p>
+<table>
+<thead>
+<tr>
+<th>CacheManager</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SimpleCacheManager</td>
+<td>使用简单的Collection存储缓存数据，用来做测试用</td>
+</tr>
+<tr>
+<td>ConcurrentMapCacheManager</td>
+<td>使用ConcurrentMap存储缓存数据</td>
+</tr>
+<tr>
+<td>EhCacheCacheManager</td>
+<td>使用EhCache作为缓存技术</td>
+</tr>
+<tr>
+<td>GuavaCacheManager</td>
+<td>使用Google Guava的GuavaCache作为缓存技术</td>
+</tr>
+<tr>
+<td>JCacheCacheManager</td>
+<td>使用JCache(JSR-107)标准的实现作为缓存技术，比如Apache Commons JCS</td>
+</tr>
+<tr>
+<td>RedisCacheManager</td>
+<td>使用Redis作为缓存技术</td>
+</tr>
+</tbody>
+</table>
+<p>在我们使用任意一个实现的CacheManager的时候，需要注册实现Bean：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EhCache的配置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> EhCacheCacheManager <span class="title">cacheManager</span><span class="params">(CacheManager cacheManager)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> EhCacheCacheManager(cacheManager);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然，各种缓存技术都有很多其他配置，但是配置cacheManager是必不可少的。</p>
+<h2 id="声明式缓存注解"><a href="#声明式缓存注解" class="headerlink" title="声明式缓存注解"></a>声明式缓存注解</h2><p>Spring提供4个注解来声明缓存规则，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Cacheable</td>
+<td>方法执行前先看缓存中是否有数据，如果有直接返回。如果没有就调用方法，并将方法返回值放入缓存</td>
+</tr>
+<tr>
+<td>@CachePut</td>
+<td>无论怎样都会执行方法，并将方法返回值放入缓存</td>
+</tr>
+<tr>
+<td>@CacheEvict</td>
+<td>将数据从缓存中删除</td>
+</tr>
+<tr>
+<td>@Caching</td>
+<td>可通过此注解组合多个注解策略在一个方法上面</td>
+</tr>
+</tbody>
+</table>
+<p>@Cacheable 、@CachePut 、@CacheEvict都有value属性，指定要使用的缓存名称，而key属性指定缓存中存储的键。</p>
+<h2 id="集成Redis缓存"><a href="#集成Redis缓存" class="headerlink" title="集成Redis缓存"></a>集成Redis缓存</h2><p>接下来将讲解如何集成redis来实现缓存，现在使用的是最新的SpringBoot 2，改动还是比较大的。</p>
+<h3 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h3><p>安装和配置redis服务器网上很多教程，这里就不多讲了。在linux服务器上面安装一个redis，启动后端口号为默认的6379。</p>
+<h3 id="添加maven依赖"><a href="#添加maven依赖" class="headerlink" title="添加maven依赖"></a>添加maven依赖</h3><p>SpringBoot 2开始默认的Redis客户端实现是Lettuce，同时你需要添加commons-pool2的依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置application-yml"><a href="#配置application-yml" class="headerlink" title="配置application.yml"></a>配置application.yml</h3><ul>
+<li>指定缓存的类型</li>
+<li>配置redis的服务器信息</li>
+<li>配置lettuce连接池信息</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  profiles:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">  cache:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">REDIS</span></span><br><span class="line"><span class="attr">    redis:</span></span><br><span class="line"><span class="attr">      cache-null-values:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">      time-to-live:</span> <span class="number">600000</span><span class="string">ms</span></span><br><span class="line"><span class="attr">      use-key-prefix:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    cache-names:</span> <span class="string">userCache,allUsersCache</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">6379</span></span><br><span class="line"><span class="attr">    database:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">    lettuce:</span></span><br><span class="line"><span class="attr">      shutdown-timeout:</span> <span class="number">200</span><span class="string">ms</span></span><br><span class="line"><span class="attr">      pool:</span></span><br><span class="line"><span class="attr">        max-active:</span> <span class="number">7</span></span><br><span class="line"><span class="attr">        max-idle:</span> <span class="number">7</span></span><br><span class="line"><span class="attr">        min-idle:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">        max-wait:</span> <span class="bullet">-1</span><span class="string">ms</span></span><br></pre></td></tr></table></figure>
+<p>这里我还指定了缓存名称列表：userCache,allUsersCache</p>
+<h3 id="缓存配置类"><a href="#缓存配置类" class="headerlink" title="缓存配置类"></a>缓存配置类</h3><p>重新配置<code>RedisCacheManager</code>，使用新的自定义配置值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisCacheConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LettuceConnectionFactory <span class="title">redisConnectionFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RedisStandaloneConfiguration redisConf = <span class="keyword">new</span> RedisStandaloneConfiguration();</span><br><span class="line">        redisConf.setHostName(env.getProperty(<span class="string">"spring.redis.host"</span>));</span><br><span class="line">        redisConf.setPort(Integer.parseInt(env.getProperty(<span class="string">"spring.redis.port"</span>)));</span><br><span class="line">        redisConf.setPassword(RedisPassword.of(env.getProperty(<span class="string">"spring.redis.password"</span>)));</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LettuceConnectionFactory(redisConf);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisCacheConfiguration <span class="title">cacheConfiguration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()</span><br><span class="line">                .entryTtl(Duration.ofSeconds(<span class="number">600</span>))</span><br><span class="line">                .disableCachingNullValues();</span><br><span class="line">        <span class="keyword">return</span> cacheConfig;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisCacheManager <span class="title">cacheManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RedisCacheManager rcm = RedisCacheManager.builder(redisConnectionFactory())</span><br><span class="line">                .cacheDefaults(cacheConfiguration())</span><br><span class="line">                .transactionAware()</span><br><span class="line">                .build();</span><br><span class="line">        <span class="keyword">return</span> rcm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="keyGenerator"><a href="#keyGenerator" class="headerlink" title="keyGenerator"></a>keyGenerator</h3><p>一般来讲我们使用key属性就可以满足大部分要求，但是如果你还想更好的自定义key，可以实现keyGenerator。</p>
+<p>这个属性为定义key生成的类，和key属性不能同时存在。</p>
+<p>在<code>RedisCacheConfig</code>配置类中添加我自定义的KeyGenerator：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义缓存key的生成类实现</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean</span>(name = <span class="string">"myKeyGenerator"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> KeyGenerator <span class="title">myKeyGenerator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> KeyGenerator() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Object <span class="title">generate</span><span class="params">(Object o, Method method, Object... params)</span> </span>&#123;</span><br><span class="line">            logger.info(<span class="string">"自定义缓存，使用第一参数作为缓存key，params = "</span> + Arrays.toString(params));</span><br><span class="line">            <span class="comment">// 仅仅用于测试，实际不可能这么写</span></span><br><span class="line">            <span class="keyword">return</span> params[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过以上配置后，redis缓存管理对象已经生成，下面简单介绍如何使用。</p>
+<h2 id="缓存注解"><a href="#缓存注解" class="headerlink" title="缓存注解"></a>缓存注解</h2><p>缓存是通过注解实现的，这里详细讲解一下这几个缓存注解，以及注解参数含义。</p>
+<h3 id="Cacheable"><a href="#Cacheable" class="headerlink" title="@Cacheable"></a>@Cacheable</h3><p>这个注解含义是方法结果会被放入缓存，并且一旦缓存后，下一次调用此方法，会通过key去查找缓存是否存在，如果存在就直接取缓存值，不再执行方法。</p>
+<p>这个注解有几个参数值，定义如下</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cacheNames</td>
+<td>缓存名称</td>
+</tr>
+<tr>
+<td>value</td>
+<td>缓存名称的别名</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>Spring SpEL 表达式，用来确定是否缓存</td>
+</tr>
+<tr>
+<td>key</td>
+<td>SpEL 表达式，用来动态计算key</td>
+</tr>
+<tr>
+<td>keyGenerator</td>
+<td>Bean 名字，用来自定义key生成算法，跟key不能同时用</td>
+</tr>
+<tr>
+<td>unless</td>
+<td>SpEL 表达式，用来否决缓存，作用跟condition相反</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>多线程同时访问时候进行同步</td>
+</tr>
+</tbody>
+</table>
+<p>在计算key、condition或者unless的值得时候，可以使用到以下的特有的SpEL表达式</p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#result</td>
+<td>表示方法的返回结果</td>
+</tr>
+<tr>
+<td>#root.method</td>
+<td>当前方法</td>
+</tr>
+<tr>
+<td>#root.target</td>
+<td>目标对象</td>
+</tr>
+<tr>
+<td>#root.caches</td>
+<td>被影响到的缓存列表</td>
+</tr>
+<tr>
+<td>#root.methodName</td>
+<td>方法名称简称</td>
+</tr>
+<tr>
+<td>#root.targetClass</td>
+<td>目标类</td>
+</tr>
+<tr>
+<td>#root.args[x]</td>
+<td>方法的第x个参数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="CachePut"><a href="#CachePut" class="headerlink" title="@CachePut"></a>@CachePut</h3><p>该注解在执行完方法后会触发一次缓存put操作，参数跟@Cacheable一致</p>
+<h3 id="CacheEvict"><a href="#CacheEvict" class="headerlink" title="@CacheEvict"></a>@CacheEvict</h3><p>该注解在执行完方法后会触发一次缓存evict操作，参数除了@Cacheable里的外，还有个特殊的<code>allEntries</code>，
+表示将清空缓存中所有的值。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>在service中定义增删改的几个常见方法，通过注解实现缓存：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * cacheNames 设置缓存的值</span></span><br><span class="line"><span class="comment">     * key：指定缓存的key，这是指参数id值。key可以使用spEl表达式</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Cacheable</span>(value = <span class="string">"userCache"</span>, key = <span class="string">"#id"</span>, unless=<span class="string">"#result == null"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"获取用户start..."</span>);</span><br><span class="line">        <span class="keyword">return</span> userMapper.selectById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Cacheable</span>(value = <span class="string">"allUsersCache"</span>, unless = <span class="string">"#result.size() == 0"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">getAllUsers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"获取所有用户列表"</span>);</span><br><span class="line">        <span class="keyword">return</span> userMapper.selectList(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建用户，同时使用新的返回值的替换缓存中的值</span></span><br><span class="line"><span class="comment">     * 创建用户后会将allUsersCache缓存全部清空</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Caching</span>(</span><br><span class="line">            put = &#123;<span class="meta">@CachePut</span>(value = <span class="string">"userCache"</span>, key = <span class="string">"#user.id"</span>)&#125;,</span><br><span class="line">            evict = &#123;<span class="meta">@CacheEvict</span>(value = <span class="string">"allUsersCache"</span>, allEntries = <span class="keyword">true</span>)&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">createUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"创建用户start..., user.id="</span> + user.getId());</span><br><span class="line">        userMapper.insert(user);</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 更新用户，同时使用新的返回值的替换缓存中的值</span></span><br><span class="line"><span class="comment">     * 更新用户后会将allUsersCache缓存全部清空</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Caching</span>(</span><br><span class="line">            put = &#123;<span class="meta">@CachePut</span>(value = <span class="string">"userCache"</span>, key = <span class="string">"#user.id"</span>)&#125;,</span><br><span class="line">            evict = &#123;<span class="meta">@CacheEvict</span>(value = <span class="string">"allUsersCache"</span>, allEntries = <span class="keyword">true</span>)&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">updateUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"更新用户start..."</span>);</span><br><span class="line">        userMapper.updateById(user);</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对符合key条件的记录从缓存中移除</span></span><br><span class="line"><span class="comment">     * 删除用户后会将allUsersCache缓存全部清空</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Caching</span>(</span><br><span class="line">            evict = &#123;</span><br><span class="line">                    <span class="meta">@CacheEvict</span>(value = <span class="string">"userCache"</span>, key = <span class="string">"#id"</span>),</span><br><span class="line">                    <span class="meta">@CacheEvict</span>(value = <span class="string">"allUsersCache"</span>, allEntries = <span class="keyword">true</span>)</span><br><span class="line">            &#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"删除用户start..."</span>);</span><br><span class="line">        userMapper.deleteById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后写个测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(classes = Application.class)</span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCache</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 创建一个用户admin</span></span><br><span class="line">        <span class="keyword">int</span> id = <span class="keyword">new</span> Random().nextInt(<span class="number">1000</span>);</span><br><span class="line">        User user = <span class="keyword">new</span> User(id, <span class="string">"admin"</span>, <span class="string">"admin"</span>);</span><br><span class="line">        userService.createUser(user);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 再创建一个用户xiong</span></span><br><span class="line">        <span class="keyword">int</span> id2 = <span class="keyword">new</span> Random().nextInt(<span class="number">1000</span>);</span><br><span class="line">        User user2 = <span class="keyword">new</span> User(id2, <span class="string">"xiong"</span>, <span class="string">"neng"</span>);</span><br><span class="line">        userService.createUser(user2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查询所有用户列表</span></span><br><span class="line">        List&lt;User&gt; list = userService.getAllUsers();</span><br><span class="line">        assertEquals(list.size(), <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 两次访问看看缓存命中情况</span></span><br><span class="line">        User user3 = userService.getById(id); <span class="comment">// 第1次访问</span></span><br><span class="line">        assertEquals(user3.getPassword(), <span class="string">"admin"</span>);</span><br><span class="line">        User user4 = userService.getById(id); <span class="comment">// 第2次访问</span></span><br><span class="line">        assertEquals(user4.getPassword(), <span class="string">"admin"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新用户密码</span></span><br><span class="line">        user4.setPassword(<span class="string">"123456"</span>);</span><br><span class="line">        userService.updateUser(user4);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新完成后再次访问用户</span></span><br><span class="line">        User user5 = userService.getById(id); <span class="comment">// 第4次访问</span></span><br><span class="line">        assertEquals(user5.getPassword(), <span class="string">"123456"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 删除用户admin</span></span><br><span class="line">        userService.deleteById(id);</span><br><span class="line">        assertNull(userService.getById(id));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是测试的打印日志一部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">创建用户start..., user.id=444</span><br><span class="line">==&gt;  Preparing: INSERT INTO t_user ( id, username, `password` ) VALUES ( ?, ?, ? )</span><br><span class="line">==&gt; Parameters: 444(Integer), admin(String), admin(String)</span><br><span class="line">&lt;==    Updates: 1</span><br><span class="line">创建用户start..., user.id=895</span><br><span class="line">==&gt;  Preparing: INSERT INTO t_user ( id, username, `password` ) VALUES ( ?, ?, ? )</span><br><span class="line">==&gt; Parameters: 895(Integer), xiong(String), neng(String)</span><br><span class="line">&lt;==    Updates: 1</span><br><span class="line">Starting without optional epoll library</span><br><span class="line">Starting without optional kqueue library</span><br><span class="line">获取所有用户列表</span><br><span class="line">==&gt;  Preparing: SELECT id AS id,username,`password` FROM t_user</span><br><span class="line">==&gt; Parameters:</span><br><span class="line">&lt;==      Total: 2</span><br><span class="line">获取用户start...</span><br><span class="line">==&gt;  Preparing: SELECT id AS id,username,`password` FROM t_user WHERE id=?</span><br><span class="line">==&gt; Parameters: 444(Integer)</span><br><span class="line">&lt;==      Total: 1</span><br><span class="line">获取用户start...</span><br><span class="line">更新用户start...</span><br><span class="line">==&gt;  Preparing: UPDATE t_user SET username=?, `password`=? WHERE id=?</span><br><span class="line">==&gt; Parameters: admin(String), 123456(String), 444(Integer)</span><br><span class="line">&lt;==    Updates: 1</span><br><span class="line">获取用户start...</span><br><span class="line">==&gt;  Preparing: SELECT id AS id,username,`password` FROM t_user WHERE id=?</span><br><span class="line">==&gt; Parameters: 444(Integer)</span><br><span class="line">&lt;==      Total: 1</span><br><span class="line">删除用户start...</span><br><span class="line">==&gt;  Preparing: DELETE FROM t_user WHERE id=?</span><br><span class="line">==&gt; Parameters: 444(Integer)</span><br><span class="line">&lt;==    Updates: 1</span><br><span class="line">获取用户start...</span><br><span class="line">==&gt;  Preparing: SELECT id AS id,username,`password` FROM t_user WHERE id=?</span><br><span class="line">==&gt; Parameters: 444(Integer)</span><br><span class="line">&lt;==      Total: 0</span><br><span class="line">Rolled back transaction for test: [DefaultTestContext@44ebcd03 testClass = UserServiceTest,</span><br><span class="line">Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@1a5a4e19:</span><br><span class="line">&#123;dataSource-1&#125; closed</span><br></pre></td></tr></table></figure>
+<p>可以看到，第2次、第3次获取的时候并没有执行方法，说明缓存生效了。后面更新会同时更新缓存，取出来的也是更新后的数据。</p>
+<h2 id="切换缓存技术"><a href="#切换缓存技术" class="headerlink" title="切换缓存技术"></a>切换缓存技术</h2><p>得益于SpringBoot的自动配置机制，切换缓存技术除了替换相关maven依赖包和配置Bean外，使用方式和实例中一样，
+不需要修改业务代码。如果你要切换到其他缓存技术非常简单。</p>
+<p><strong>EhCache</strong></p>
+<p>当我们需要使用EhCache作为缓存技术的时候，只需要在pom.xml中添加EhCache的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.sf.ehcache<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ehcahe<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>EhCache的配置文件ehcache.xml只需要放到类路径下面，SpringBoot会自动扫描，例如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">ehcache</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:noNamespaceSchemaLocation</span>=<span class="string">"http://ehcache.org/ehcache.xsd"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">updateCheck</span>=<span class="string">"false"</span> <span class="attr">monitoring</span>=<span class="string">"autodetect"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">dynamicConfig</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">diskStore</span> <span class="attr">path</span>=<span class="string">"java.io.tmpdir/ehcache"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">defaultCache</span></span></span><br><span class="line"><span class="tag">            <span class="attr">maxElementsInMemory</span>=<span class="string">"50000"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">eternal</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">timeToIdleSeconds</span>=<span class="string">"3600"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">timeToLiveSeconds</span>=<span class="string">"3600"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">overflowToDisk</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">diskPersistent</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">diskExpiryThreadIntervalSeconds</span>=<span class="string">"120"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">cache</span> <span class="attr">name</span>=<span class="string">"authorizationCache"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">maxEntriesLocalHeap</span>=<span class="string">"2000"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">eternal</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">timeToIdleSeconds</span>=<span class="string">"3600"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">timeToLiveSeconds</span>=<span class="string">"3600"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">overflowToDisk</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">statistics</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">cache</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ehcache</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>SpringBoot会为我们自动配置<code>EhCacheCacheManager</code>这个Bean，不过你也可以自己定义。</p>
+<p><strong>Guava</strong></p>
+<p>当我们需要Guava作为缓存技术的时候，只需要在pom.xml中增加Guava的依赖即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>18.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>SpringBoot会为我们自动配置<code>GuavaCacheManager</code>这个Bean。</p>
+<p><strong>Redis</strong></p>
+<p>最后还提一点，本篇采用Redis作为缓存技术，添加了依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>SpringBoot会为我们自动配置<code>RedisCacheManager</code>这个Bean，同时还会配置<code>RedisTemplate</code>这个Bean。
+后面这个Bean就是下一篇要讲解的操作Redis数据库用，这个就比单纯注解缓存强大和灵活的多了。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.concretepage.com/spring-boot/spring-boot-redis-cache" target="_blank" rel="noopener">Spring Boot Redis Cache</a></p>
+<h2 id="GitHub源码"><a href="#GitHub源码" class="headerlink" title="GitHub源码"></a>GitHub源码</h2><p><a href="https://github.com/yidao620c/SpringBootBucket/tree/master/springboot-cache" target="_blank" rel="noopener">springboot-cache</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/26/spring/sb-transaction/" rel="next" title="SpringBoot系列 - 声明式事务">
+                <i class="fa fa-chevron-left"></i> SpringBoot系列 - 声明式事务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/30/spring/sb-redis/" rel="prev" title="SpringBoot系列 - Redis数据库">
+                SpringBoot系列 - Redis数据库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="Yahkun Ding" />
+            
+              <p class="site-author-name" itemprop="name">Yahkun Ding</p>
+              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">186</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yahkun" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yahkun@foxmail.com" target="_blank" title="E-mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list" style="list-style: none;">
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.infoq.com/cn/" title="InfoQ" target="_blank">InfoQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://blog.jobbole.com/" title="伯乐在线" target="_blank">伯乐在线</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring缓存支持"><span class="nav-number">1.</span> <span class="nav-text">Spring缓存支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明式缓存注解"><span class="nav-number">2.</span> <span class="nav-text">声明式缓存注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成Redis缓存"><span class="nav-number">3.</span> <span class="nav-text">集成Redis缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装redis"><span class="nav-number">3.1.</span> <span class="nav-text">安装redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加maven依赖"><span class="nav-number">3.2.</span> <span class="nav-text">添加maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置application-yml"><span class="nav-number">3.3.</span> <span class="nav-text">配置application.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存配置类"><span class="nav-number">3.4.</span> <span class="nav-text">缓存配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keyGenerator"><span class="nav-number">3.5.</span> <span class="nav-text">keyGenerator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存注解"><span class="nav-number">4.</span> <span class="nav-text">缓存注解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cacheable"><span class="nav-number">4.1.</span> <span class="nav-text">@Cacheable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CachePut"><span class="nav-number">4.2.</span> <span class="nav-text">@CachePut</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CacheEvict"><span class="nav-number">4.3.</span> <span class="nav-text">@CacheEvict</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">5.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换缓存技术"><span class="nav-number">6.</span> <span class="nav-text">切换缓存技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">7.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub源码"><span class="nav-number">8.</span> <span class="nav-text">GitHub源码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yahkun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">361.2k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">粤ICP备17025554号-1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yahkun',
+            repo: 'comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '56fd98792841961d31a92ce3a2b5ba36e7bc2f17',
+            
+                client_id: '608d980b75fc48a1873e'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

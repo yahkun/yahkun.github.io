@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="jenkins," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson项目。 在与Oracle发生争执后，项目从Hudson复制过来继续发展。 Jenkins提供了软件开发的持续集成服务。它运行在Servlet容器中（例如Apache Tomcat）。 它支持许多软件配置管理（SCM）工具，可以执行基于Apache Ant和Apache Maven的项目， 以及任意的Shell脚本和Windo">
+<meta name="keywords" content="jenkins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins持续集成 - 安装配置">
+<meta property="og:url" content="http://yoursite.com/2017/03/20/fullstack/jenkins01/index.html">
+<meta property="og:site_name" content="秦时明月">
+<meta property="og:description" content="Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson项目。 在与Oracle发生争执后，项目从Hudson复制过来继续发展。 Jenkins提供了软件开发的持续集成服务。它运行在Servlet容器中（例如Apache Tomcat）。 它支持许多软件配置管理（SCM）工具，可以执行基于Apache Ant和Apache Maven的项目， 以及任意的Shell脚本和Windo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins02.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins03.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins04.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins05.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins06.png">
+<meta property="og:updated_time" content="2018-09-17T20:22:55.613Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jenkins持续集成 - 安装配置">
+<meta name="twitter:description" content="Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson项目。 在与Oracle发生争执后，项目从Hudson复制过来继续发展。 Jenkins提供了软件开发的持续集成服务。它运行在Servlet容器中（例如Apache Tomcat）。 它支持许多软件配置管理（SCM）工具，可以执行基于Apache Ant和Apache Maven的项目， 以及任意的Shell脚本和Windo">
+<meta name="twitter:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins02.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/20/fullstack/jenkins01/"/>
+
+
+
+
+
+  <title>Jenkins持续集成 - 安装配置 | 秦时明月</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦时明月</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code the world, trave the world.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/20/fullstack/jenkins01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yahkun Ding">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦时明月">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jenkins持续集成 - 安装配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T12:55:12+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fullstack/" itemprop="url" rel="index">
+                    <span itemprop="name">fullstack</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/20/fullstack/jenkins01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/03/20/fullstack/jenkins01/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,622 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson项目。
+在与Oracle发生争执后，项目从Hudson复制过来继续发展。</p>
+<p>Jenkins提供了软件开发的持续集成服务。它运行在Servlet容器中（例如Apache Tomcat）。
+它支持许多软件配置管理（SCM）工具，可以执行基于Apache Ant和Apache Maven的项目，
+以及任意的Shell脚本和Windows批处理命令。Jenkins的主要开发者是川口耕介，MIT许可证。<a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>环境：CentOS7.2、JDK8、Git2、Maven3、Nginx、Jenkins2</p>
+<p>Jenkins有很多中安装方式，这里在CentOS7.2系统上面，我选择通过yum的方式安装，然后使用nginx做反向代理。</p>
+<h3 id="安装JDK8"><a href="#安装JDK8" class="headerlink" title="安装JDK8"></a>安装JDK8</h3><p>先查查看系统上面是否有其他的旧版本，有的话就卸载掉：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo rpm -qa | grep jdk</span><br><span class="line">jdk-1.7.0_45-fcs.x86_64</span><br><span class="line">sudo rpm -e jdk-1.7.0_45</span><br></pre></td></tr></table></figure></p>
+<p>下载最新的JDK8压缩包
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/</span><br><span class="line">wget --no-cookies --no-check-certificate --header &quot;Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie&quot; &quot;http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u121-linux-x64.tar.gz&quot;</span><br><span class="line"># or go to http://mirrors.linuxeye.com/jdk/</span><br><span class="line">tar xzf jdk-8u121-linux-x64.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>使用alternatives命令安装java
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/jdk1.8.0_121/</span><br><span class="line">sudo chown -R root:root /opt/jdk1.8.0_121/</span><br><span class="line">alternatives --install /usr/bin/java java /opt/jdk1.8.0_121/bin/java 2</span><br><span class="line">alternatives --config java</span><br><span class="line">There are 3 programs which provide &apos;java&apos;.</span><br><span class="line"></span><br><span class="line">  Selection    Command</span><br><span class="line">-----------------------------------------------</span><br><span class="line">*  1           /opt/jdk1.7.0_71/bin/java</span><br><span class="line"> + 2           /opt/jdk1.8.0_60/bin/java</span><br><span class="line">   3           /opt/jdk1.8.0_121/bin/java</span><br><span class="line"></span><br><span class="line">Enter to keep the current selection[+], or type selection number: 3</span><br></pre></td></tr></table></figure></p>
+<p>配置javac和jar命令
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alternatives --install /usr/bin/jar jar /opt/jdk1.8.0_121/bin/jar 2</span><br><span class="line">alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_121/bin/javac 2</span><br><span class="line">alternatives --set jar /opt/jdk1.8.0_121/bin/jar</span><br><span class="line">alternatives --set javac /opt/jdk1.8.0_121/bin/javac</span><br></pre></td></tr></table></figure></p>
+<p>检查是否安装成功:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br><span class="line"></span><br><span class="line">java version &quot;1.8.0_121&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_121-b13)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)</span><br></pre></td></tr></table></figure></p>
+<p>配置JAVA_HOME环境变量，编辑<code>/etc/profile</code>文件，最后加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/opt/jdk1.8.0_121</span><br><span class="line">export JRE_HOME=/opt/jdk1.8.0_121/jre</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure>
+<p><code>source /etc/profile</code> 搞定！</p>
+<p>还需要安装git、maven，保证最后有git和mvn命令，这里省略。</p>
+<h3 id="安装Jenkins2"><a href="#安装Jenkins2" class="headerlink" title="安装Jenkins2"></a>安装Jenkins2</h3><p><a href="https://pkg.jenkins.io/redhat-stable/" target="_blank" rel="noopener">https://pkg.jenkins.io/redhat-stable/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br><span class="line">sudo yum install jenkins</span><br></pre></td></tr></table></figure>
+<p>安装后产生下面3个目录文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/jenkins  ==&gt;启动脚本</span><br><span class="line">/usr/lib/jenkins/jenkins.war  ==&gt;jenkins主程序包</span><br><span class="line">/var/lib/jenkis/  ==&gt;jenkins运行时环境配置，以及数据文件。刚安装好时为空。</span><br></pre></td></tr></table></figure>
+<h3 id="迁移-Jenkins"><a href="#迁移-Jenkins" class="headerlink" title="迁移 Jenkins"></a>迁移 Jenkins</h3><p>复制老机器上的 <code>/var/lib/jenkins/</code> 的内容到新机器对应目录。</p>
+<p>如果<code>/var/lib/jenkins/</code>目录实在太大，可以将各个项目的历史构建任务先删除了再copy:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -f /var/lib/jenkins/jobs/&#123;projectname&#125;/builds/*</span><br><span class="line">rm -f /var/lib/jenkins/jobs/&#123;projectname&#125;/modules/*</span><br></pre></td></tr></table></figure>
+<h3 id="更改Jenkins目录"><a href="#更改Jenkins目录" class="headerlink" title="更改Jenkins目录"></a>更改Jenkins目录</h3><p>有时候磁盘满了，需要将jenkins的目录迁移至新的磁盘中，比如新的磁盘挂载点为/data目录，
+我想将<code>/var/lib/jenkins</code>目录迁移至<code>/data/jenkins</code>中，最简单的办法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo service jenkins stop</span><br><span class="line">sudo mv /var/lib/jenkins /data</span><br><span class="line">sudo ln -s /data/jenkins /var/lib/jenkins</span><br><span class="line">sudo service jenkins start</span><br></pre></td></tr></table></figure>
+<h3 id="安装GitLab"><a href="#安装GitLab" class="headerlink" title="安装GitLab"></a>安装GitLab</h3><p>我专门写过一篇文章怎样安装和使用Gitlab，请查阅 <a href="https://www.xncoding.com/2016/09/09/fullstack/gitlab.html" target="_blank" rel="noopener">centos7安装gitlab8.8</a></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置文件在<code>/etc/sysconfig/jenkins</code>中，可配置端口，默认的端口为8080</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JENKINS_PORT=&quot;8086&quot;</span><br></pre></td></tr></table></figure>
+<p>同时可将运行jenkins的用户改为root，默认为jenkins用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JENKINS_USER=&quot;root&quot;</span><br></pre></td></tr></table></figure>
+<p>重启服务：<code>/etc/init.d/jenkins restart</code></p>
+<p>第一次进入jenkins需要你输入root密码，你安装引导把那个文件打开输入就是。
+然后设置root密码，安装推荐插件，耐心等待片刻即可。</p>
+<p>界面先来一个吧，很熟悉的界面：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins02.png" alt=""></p>
+<h3 id="Gitlab插件"><a href="#Gitlab插件" class="headerlink" title="Gitlab插件"></a>Gitlab插件</h3><p>我这里要使用Gitlab来做演示，所以先安装相应的插件</p>
+<ul>
+<li>GitLab Plugin</li>
+<li>Gitlab Hook Plugin</li>
+<li>AnsiColor（可选）这个插件可以让Jenkins的控制台输出的log带有颜色（就和linux控制台那样）</li>
+</ul>
+<h3 id="Jenkins系统设置"><a href="#Jenkins系统设置" class="headerlink" title="Jenkins系统设置"></a>Jenkins系统设置</h3><p>操作： <code>Manage Jenkins -&gt; Configure System</code></p>
+<p>Jenkins内部shell UTF-8 编码设置，如下图所示，LANG=zh_CN.UTF-8</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins03.png" alt=""></p>
+<p>Jenkins Location和Email设置，如下图所示</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins04.png" alt=""></p>
+<h3 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h3><p>本机生成SSH：<code>ssh-keygen -t rsa -C &quot;Your email&quot;</code>，最终生成id_rsa和id_rsa.pub(公钥)</p>
+<p>Gitlab上添加公钥：复制id_rsa.pub里面的公钥添加到Gitlab</p>
+<p>Jenkins上配置密钥到SSH：复制id_rsa里面的公钥添加到Jenkins（private key选项）</p>
+<p>操作： <code>Manage Jenkins -&gt; Credentials -&gt; System -&gt; Global credentials (unrestricted) -&gt; Add Credentials</code></p>
+<p>然后选择kind类型为<code>SSH username with private key</code>，username随便填，
+<code>Private Key</code>选择<code>Enter directly</code>，然后把你的私钥直接copy到这里来，保存即可。
+如果你生成sshkey的时候输入了密码，那么这里的Passphrase也要输入，否则留空。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins05.png" alt=""></p>
+<h3 id="第一个pipeline"><a href="#第一个pipeline" class="headerlink" title="第一个pipeline"></a>第一个pipeline</h3><p>直接参考官网教程：<a href="https://jenkins.io/doc/pipeline/tour/hello-world/#examples" target="_blank" rel="noopener">https://jenkins.io/doc/pipeline/tour/hello-world/#examples</a></p>
+<p>先在本地clone工程：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@192.168.217.161:xiongneng/testproject.git</span><br></pre></td></tr></table></figure></p>
+<p>然后添加一个文件叫<code>Jenkinsfile</code>，这里我选的是python的例子，里面内容如下：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent &#123; docker &apos;python:3.5.1&apos; &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;build&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &apos;python --version&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后提交后push上去即可：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git commt -a -m &quot;add Jenkinsfile&quot;</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>接下来完全按照官网教程来：</p>
+<ol>
+<li>Copy one of the examples below into your repository and name it Jenkinsfile</li>
+<li>Click the New Item menu within Jenkins Click <strong>New Item</strong> on the Jenkins home page</li>
+<li>Provide a name for your new item (e.g. My Pipeline) and select Multibranch Pipeline</li>
+<li>Click the Add Source button, choose the type of repository you want to use and fill in the details.</li>
+<li>Click the Save button and watch your first Pipeline run!</li>
+</ol>
+<p>第一次运行踩过的一些坑：</p>
+<ol>
+<li>主机上面先安装docker，不然会报命令找不到</li>
+<li>我使用过的tomcat来运行jenkins，这个进程是使用tomcat用户启动，执行命令也是tomcat用户，
+所以需要确保tomcat用户可使用<code>su - c</code>执行，也就是shell为<code>/bin/bash</code>而不是<code>/sbin/nologin</code></li>
+<li>Cannot connect to the Docker daemon. Is the docker daemon running on this host?
+先切换到tomcat用户执行<code>docker pull python:3.5.1</code>命令发现报错一样，那么看看docker进程是否启动。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl status docker</span><br><span class="line">systemctl stop docker</span><br><span class="line">systemctl start docker</span><br><span class="line">....OK</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>最后看运行结果：
+<img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins06.png" alt=""></p>
+<p>说明已经在执行脚本了，那么耐心等待就行！</p>
+<h2 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h2><p>Jenkins的升级非常简单，插件升级就去插件管理里面去在线升级，如果Jenkins本身要升级就下载最新war包替换，
+修改权限拥有者重启tomcat服务即可。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/16/ceph/pool/" rel="next" title="ceph pool相关命令">
+                <i class="fa fa-chevron-left"></i> ceph pool相关命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/22/fullstack/jenkins02/" rel="prev" title="Jenkins持续集成 - 管道详解">
+                Jenkins持续集成 - 管道详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="Yahkun Ding" />
+            
+              <p class="site-author-name" itemprop="name">Yahkun Ding</p>
+              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">186</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yahkun" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yahkun@foxmail.com" target="_blank" title="E-mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list" style="list-style: none;">
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.infoq.com/cn/" title="InfoQ" target="_blank">InfoQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://blog.jobbole.com/" title="伯乐在线" target="_blank">伯乐在线</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装JDK8"><span class="nav-number">1.1.</span> <span class="nav-text">安装JDK8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Jenkins2"><span class="nav-number">1.2.</span> <span class="nav-text">安装Jenkins2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迁移-Jenkins"><span class="nav-number">1.3.</span> <span class="nav-text">迁移 Jenkins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改Jenkins目录"><span class="nav-number">1.4.</span> <span class="nav-text">更改Jenkins目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装GitLab"><span class="nav-number">1.5.</span> <span class="nav-text">安装GitLab</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gitlab插件"><span class="nav-number">2.1.</span> <span class="nav-text">Gitlab插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins系统设置"><span class="nav-number">2.2.</span> <span class="nav-text">Jenkins系统设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置SSH"><span class="nav-number">2.3.</span> <span class="nav-text">配置SSH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一个pipeline"><span class="nav-number">2.4.</span> <span class="nav-text">第一个pipeline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级"><span class="nav-number">3.</span> <span class="nav-text">升级</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yahkun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">361.2k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">粤ICP备17025554号-1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yahkun',
+            repo: 'comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '56fd98792841961d31a92ce3a2b5ba36e7bc2f17',
+            
+                client_id: '608d980b75fc48a1873e'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

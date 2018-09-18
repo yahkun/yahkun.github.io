@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="springboot," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Spring Batch是一个轻量级的框架,完全面向Spring的批处理框架,用于企业级大量的数据读写处理系统。以POJO和Spring 框架为基础， 包括日志记录/跟踪，事务管理、 作业处理统计工作重新启动、跳过、资源管理等功能。 Spring Batch官网是这样介绍的自己：一款轻量的、全面的批处理框架，用于开发强大的日常运营的企业级批处理应用程序。 框架主要有以下功能：  Transacti">
+<meta name="keywords" content="springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot系列 - 批处理">
+<meta property="og:url" content="http://yoursite.com/2017/08/01/spring/sb-batch/index.html">
+<meta property="og:site_name" content="秦时明月">
+<meta property="og:description" content="Spring Batch是一个轻量级的框架,完全面向Spring的批处理框架,用于企业级大量的数据读写处理系统。以POJO和Spring 框架为基础， 包括日志记录/跟踪，事务管理、 作业处理统计工作重新启动、跳过、资源管理等功能。 Spring Batch官网是这样介绍的自己：一款轻量的、全面的批处理框架，用于开发强大的日常运营的企业级批处理应用程序。 框架主要有以下功能：  Transacti">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-batch01.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-batch02.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-batch03.png">
+<meta property="og:updated_time" content="2018-09-17T20:22:55.621Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot系列 - 批处理">
+<meta name="twitter:description" content="Spring Batch是一个轻量级的框架,完全面向Spring的批处理框架,用于企业级大量的数据读写处理系统。以POJO和Spring 框架为基础， 包括日志记录/跟踪，事务管理、 作业处理统计工作重新启动、跳过、资源管理等功能。 Spring Batch官网是这样介绍的自己：一款轻量的、全面的批处理框架，用于开发强大的日常运营的企业级批处理应用程序。 框架主要有以下功能：  Transacti">
+<meta name="twitter:image" content="https://xnstatic-1253397658.file.myqcloud.com/sb-batch01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/01/spring/sb-batch/"/>
+
+
+
+
+
+  <title>SpringBoot系列 - 批处理 | 秦时明月</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦时明月</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code the world, trave the world.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/01/spring/sb-batch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yahkun Ding">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦时明月">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot系列 - 批处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-01T19:10:22+08:00">
+                2017-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/01/spring/sb-batch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/08/01/spring/sb-batch/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,355 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  25 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Spring Batch是一个轻量级的框架,完全面向Spring的批处理框架,用于企业级大量的数据读写处理系统。以POJO和Spring 框架为基础，
+包括日志记录/跟踪，事务管理、 作业处理统计工作重新启动、跳过、资源管理等功能。</p>
+<p>Spring Batch官网是这样介绍的自己：一款轻量的、全面的批处理框架，用于开发强大的日常运营的企业级批处理应用程序。</p>
+<p>框架主要有以下功能：</p>
+<ul>
+<li>Transaction management（事务管理）</li>
+<li>Chunk based processing（基于块的处理）</li>
+<li>Declarative I/O（声明式的输入输出）</li>
+<li>Start/Stop/Restart（启动/停止/再启动）</li>
+<li>Retry/Skip（重试/跳过）</li>
+</ul>
+<p>如果你的批处理程序需要使用上面的功能，那就大胆地使用它吧。<a id="more"></a></p>
+<h2 id="框架介绍"><a href="#框架介绍" class="headerlink" title="框架介绍"></a>框架介绍</h2><p>先用一个图让你有一个大概印象，这个东西是什么：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/sb-batch01.png" alt=""></p>
+<p>框架一共有5个主要角色：</p>
+<ol>
+<li>JobRepository是用户注册Job的容器，就是存储数据的地方，可以看做是一个数据库的接口，在任务执行的时候需要通过它来记录任务状态等等信息。</li>
+<li>JobLauncher是任务启动器，通过它来启动任务，可以看做是程序的入口。</li>
+<li>Job代表着一个具体的任务。</li>
+<li>Step代表着一个具体的步骤，一个Job可以包含多个Step（想象把大象放进冰箱这个任务需要多少个步骤你就明白了）。</li>
+<li>Item就是输出-&gt;处理-&gt;输出，一个完整Step流程。</li>
+</ol>
+<p>下面简要的介绍一下这5个角色</p>
+<h3 id="JobRepository"><a href="#JobRepository" class="headerlink" title="JobRepository"></a>JobRepository</h3><p>JobRepository用于存储任务执行的状态信息，比如什么时间点执行了什么任务、任务执行结果如何等等。
+框架提供了2种实现，一种是通过Map形式保存在内存中，当Java程序重启后任务信息也就丢失了，
+并且在分布式下无法获取其他节点的任务执行情况；另一种是保存在数据库中，并且将数据保存在下面6张表里：</p>
+<ul>
+<li>BATCH_JOB_INSTANCE</li>
+<li>BATCH_JOB_EXECUTION_PARAMS</li>
+<li>BATCH_JOB_EXECUTION</li>
+<li>BATCH_STEP_EXECUTION</li>
+<li>BATCH_JOB_EXECUTION_CONTEXT</li>
+<li>BATCH_STEP_EXECUTION_CONTEXT</li>
+</ul>
+<p>Spring Batch框架的JobRepository支持主流的数据库：DB2、Derby、H2、HSQLDB、MySQL、Oracle、PostgreSQL、SQLServer、Sybase。</p>
+<h3 id="JobLauncher"><a href="#JobLauncher" class="headerlink" title="JobLauncher"></a>JobLauncher</h3><p>JobLauncher是任务启动器，该接口只有一个run方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JobLauncher</span> </span>&#123;</span><br><span class="line">    <span class="function">JobExecution <span class="title">run</span><span class="params">(Job job, JobParameters jobParameters)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了传入Job对象之外，还需要传入JobParameters对象，后续讲到Job再解释为什么要多传一个JobParameters。
+通过JobLauncher可以在Java程序中调用批处理任务，也可以通过命令行或者其他框架
+（如定时调度框架Quartz、Web后台框架Spring MVC）中调用批处理任务。
+Spring Batch框架提供了一个JobLauncher的实现类SimpleJobLauncher。</p>
+<h3 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h3><p>Job代表着一个任务，一个Job与一个或者多个JobInstance相关联，而一个JobInstance又与一个或者多个JobExecution相关联：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/sb-batch02.png" alt=""></p>
+<p>考虑到任务可能不是只执行一次就再也不执行了，更多的情况可能是定时任务，如每天执行一次，每个星期执行一次等等，
+那么为了区分每次执行的任务，框架使用了JobInstance。如上图所示，Job是一个EndOfDay（每天最后时刻执行的任务），
+那么其中一个JobInstance就代表着2007年5月5日那天执行的任务实例。
+框架通过在执行JobLauncher.run(Job, JobParameters)方法时传入的JobParameters来区分是哪一天的任务。</p>
+<p>由于2007年5月5日那天执行的任务可能不会一次就执行完成，比如中途被停止，或者出现异常导致中断，
+需要多执行几次才能完成，所以框架使用了JobExecution来表示每次执行的任务。</p>
+<h3 id="Step"><a href="#Step" class="headerlink" title="Step"></a>Step</h3><p>一个Job任务可以分为几个Step步骤，与JobExection相同，每次执行Step的时候使用StepExecution来表示执行的步骤。
+每一个Step还包含着一个ItemReader、ItemProcessor、ItemWriter，下面分别介绍这三者。</p>
+<p><strong>ItemReader</strong></p>
+<p>ItemReader代表着读操作，其接口如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemReader</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">read</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>框架已经提供了多种ItemReader接口的实现类，包括对文本文件、CSV文件、XML文件、数据库、JMS消息等读的处理，当然我们也可以自己实现该接口。</p>
+<p><strong>ItemProcessor</strong></p>
+<p>ItemReader代表着处理操作，其接口如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemProcessor</span>&lt;<span class="title">I</span>, <span class="title">O</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">O <span class="title">process</span><span class="params">(I item)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>process方法的形参传入I类型的对象，通过处理后返回O型的对象。开发者可以实现自己的业务代码来对数据进行处理。</p>
+<p><strong>ItemWriter</strong></p>
+<p>ItemReader代表着写操作，其接口如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemWriter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">write</span><span class="params">(List&lt;? extends T&gt; items)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>框架已经提供了多种ItemWriter接口的实现类，包括对文本文件、CSV文件、XML文件、数据库、JMS消息等写的处理，当然我们也可以自己实现该接口。</p>
+<h3 id="Job监听器"><a href="#Job监听器" class="headerlink" title="Job监听器"></a>Job监听器</h3><p>还可以自定义任务监听器，在任务启动和完成之后进行相应的通知和响应。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 监听器实现JobExecutionListener接口，并重写其beforeJob，afterJob方法即可</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyJobListener</span> <span class="keyword">implements</span> <span class="title">JobExecutionListener</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeJob</span><span class="params">(JobExecution jobExecution)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterJob</span><span class="params">(JobExecution jobExecution)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数据校验"><a href="#数据校验" class="headerlink" title="数据校验"></a>数据校验</h3><p>我们可以JSR-303(主要实现由hibernate-validator)的注解，来校验ItemReader读取到的数据是否满足要求。</p>
+<p>首先让我们的ItemProcessor实现ValidatingItemProcessor接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyItemProcessor</span> <span class="keyword">extends</span> <span class="title">ValidatingItemProcessor</span>&lt;<span class="title">User</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">process</span><span class="params">(User item)</span> <span class="keyword">throws</span> ValidationException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.process(item);</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后定义自己的校验器，实现的Validator接口来自于Spring，我们将使用JSR-303的Validator来校验：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBeanValidator</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Validator</span>&lt;<span class="title">T</span>&gt;,<span class="title">InitializingBean</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Validator validator;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validate</span><span class="params">(T value)</span><span class="keyword">throws</span> ValidationException</span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在定义我们的MyItemProcessor时必须将MyBeanValidator设置进去，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ItemProcessor&lt;User,User&gt; <span class="title">processor</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//新建ItemProcessor接口的实现类返回</span></span><br><span class="line">    MyItemProcessor processor = <span class="keyword">new</span> MyItemProcessor();</span><br><span class="line">    processor.setValidator(myBeanValidator());</span><br><span class="line">    <span class="keyword">return</span> processor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Validator&lt;User&gt; <span class="title">myBeanValidator</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> MyBeanValidator&lt;User&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="SpringBoot集成实例"><a href="#SpringBoot集成实例" class="headerlink" title="SpringBoot集成实例"></a>SpringBoot集成实例</h2><p>Spring Boot对Spring Batch支持的源码位于<code>org.springframework.boot.autoconfigure.batch</code>下。</p>
+<p>Spring Boot为我们自动初始化了Spring Batch存储批处理记录的数据库，且当我们程序启动时，
+会自动执行我们定义的Job的Bean，不过我们可以通过配置定时器或手动触发方式启动。</p>
+<p>Spring Boot提供如下属性来定制Spring Batch：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#启动时要执行的job，默认执行全部job</span><br><span class="line">spring.batch.job.name=job1,job2</span><br><span class="line">#是否自动执行定义的job，默认是</span><br><span class="line">spring.batch.job.enabled=true</span><br><span class="line">#是否初始化Spring Batch的数据库，默认为是</span><br><span class="line">spring.batch.initializer.enabled=true</span><br><span class="line">spring.batch.schema=</span><br><span class="line">#设置Spring Batch的数据库表的前缀</span><br><span class="line">spring.batch.table-prefix=</span><br></pre></td></tr></table></figure>
+<p>下面通过一个真实的例子，需要将客户导过来的csv文件导入到我们的业务Oracle数据库中，来说明怎样在SpringBoot中使用批处理框架。</p>
+<h3 id="添加maven依赖"><a href="#添加maven依赖" class="headerlink" title="添加maven依赖"></a>添加maven依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-batch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hsqldb<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hsqldb<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--添加hibernate-validator依赖，作为数据校验使用--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate.validator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-validator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.0.7.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.validation<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>validation-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.1.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.el<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.el-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.1-b04<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.glassfish.web<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.el<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--添加hibernate-validator依赖 END--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Oracle驱动包 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.oracle<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ojdbc6<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>11.2.0.4.0-atlassian-hosted<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置application-yml"><a href="#配置application-yml" class="headerlink" title="配置application.yml"></a>配置application.yml</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###################  spring配置  ###################</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  profiles:</span></span><br><span class="line"><span class="attr">    active:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">  batch:</span></span><br><span class="line"><span class="attr">    job:</span></span><br><span class="line"><span class="attr">      enabled:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">  datasource:</span></span><br><span class="line"><span class="attr">    driver-class-name:</span> <span class="string">oracle.jdbc.driver.OracleDriver</span></span><br><span class="line"><span class="attr">    url:</span> <span class="attr">jdbc:oracle:thin:@xxx.xxx.xxx.xxx:1521:orcl11g</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">adm_real</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">adm_real</span></span><br></pre></td></tr></table></figure>
+<p>真实csv数据，位于<code>src/main/resources/NT_BSC_BUDGETVTOLL.csv</code>中</p>
+<p>表定义如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"ADM_REAL"</span>.<span class="string">"NT_BSC_BUDGETVTOLL"</span> (</span><br><span class="line">    <span class="string">"F_ID"</span> VARCHAR2(<span class="number">100</span> <span class="keyword">BYTE</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_YEAR"</span> VARCHAR2(<span class="number">4</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_TOLLID"</span> VARCHAR2(<span class="number">50</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_BUDGETID"</span> VARCHAR2(<span class="number">50</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_CBUDGETID"</span> VARCHAR2(<span class="number">50</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_VERSION"</span> VARCHAR2(<span class="number">1</span> <span class="keyword">BYTE</span>) <span class="keyword">DEFAULT</span> <span class="string">'1'</span>  <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_AUDITMSG"</span> VARCHAR2(<span class="number">100</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_TRIALSTATUS"</span> VARCHAR2(<span class="number">1</span> <span class="keyword">BYTE</span>) <span class="keyword">DEFAULT</span> <span class="string">'0'</span>  <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_FIRAUDITER"</span> VARCHAR2(<span class="number">50</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_FIRAUDITTIME"</span> VARCHAR2(<span class="number">20</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_FINAUDITER"</span> VARCHAR2(<span class="number">50</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_FINAUDITTIME"</span> VARCHAR2(<span class="number">64</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_EDITTIME"</span> VARCHAR2(<span class="number">64</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_STARTDATE"</span> VARCHAR2(<span class="number">8</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">    <span class="string">"F_ENDDATE"</span> VARCHAR2(<span class="number">8</span> <span class="keyword">BYTE</span>) <span class="literal">NULL</span> ,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="领域模型类"><a href="#领域模型类" class="headerlink" title="领域模型类"></a>领域模型类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BudgetVtoll</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String year;</span><br><span class="line">    <span class="keyword">private</span> String tollid;</span><br><span class="line">    <span class="keyword">private</span> String budgetid;</span><br><span class="line">    <span class="keyword">private</span> String cbudgetid;</span><br><span class="line">    <span class="keyword">private</span> String version;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用JSR-303注解来校验数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Size</span>(max = <span class="number">100</span>)</span><br><span class="line">    <span class="keyword">private</span> String auditmsg;</span><br><span class="line">    <span class="keyword">private</span> String trialstatus;</span><br><span class="line">    <span class="keyword">private</span> String firauditer;</span><br><span class="line">    <span class="keyword">private</span> String firaudittime;</span><br><span class="line">    <span class="keyword">private</span> String finauditer;</span><br><span class="line">    <span class="keyword">private</span> String finaudittime;</span><br><span class="line">    <span class="keyword">private</span> String edittime;</span><br><span class="line">    <span class="keyword">private</span> String startdate;</span><br><span class="line">    <span class="keyword">private</span> String enddate;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 下面省略get/set方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数据处理及校验"><a href="#数据处理及校验" class="headerlink" title="数据处理及校验"></a>数据处理及校验</h3><p>定义处理器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvItemProcessor</span> <span class="keyword">extends</span> <span class="title">ValidatingItemProcessor</span>&lt;<span class="title">BudgetVtoll</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BudgetVtoll <span class="title">process</span><span class="params">(BudgetVtoll item)</span> <span class="keyword">throws</span> ValidationException </span>&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 需要执行super.process(item)才会调用自定义校验器</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">super</span>.process(item);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 对数据进行简单的处理和转换 todo</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>校验器定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvBeanValidator</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Validator</span>&lt;<span class="title">T</span>&gt;, <span class="title">InitializingBean</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> javax.validation.Validator validator;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validate</span><span class="params">(T value)</span> <span class="keyword">throws</span> ValidationException </span>&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 使用Validator的validate方法校验数据</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Set&lt;ConstraintViolation&lt;T&gt;&gt; constraintViolations = validator.validate(value);</span><br><span class="line">        <span class="keyword">if</span> (constraintViolations.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            StringBuilder message = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            <span class="keyword">for</span> (ConstraintViolation&lt;T&gt; constraintViolation : constraintViolations) &#123;</span><br><span class="line">                message.append(constraintViolation.getMessage()).append(<span class="string">"\n"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidationException(message.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用JSR-303的Validator来校验我们的数据，在此进行JSR-303的Validator的初始化</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();</span><br><span class="line">        validator = validatorFactory.usingContext().getValidator();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="任务监听器"><a href="#任务监听器" class="headerlink" title="任务监听器"></a>任务监听器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvJobListener</span> <span class="keyword">implements</span> <span class="title">JobExecutionListener</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> startTime;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> endTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeJob</span><span class="params">(JobExecution jobExecution)</span> </span>&#123;</span><br><span class="line">        startTime = System.currentTimeMillis();</span><br><span class="line">        logger.info(<span class="string">"任务处理开始"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterJob</span><span class="params">(JobExecution jobExecution)</span> </span>&#123;</span><br><span class="line">        endTime = System.currentTimeMillis();</span><br><span class="line">        logger.info(<span class="string">"任务处理结束，总耗时="</span> + (endTime - startTime) + <span class="string">"ms"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableBatchProcessing</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvBatchConfig</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ItemReader定义,用来读取数据</span></span><br><span class="line"><span class="comment">     * 1，使用FlatFileItemReader读取文件</span></span><br><span class="line"><span class="comment">     * 2，使用FlatFileItemReader的setResource方法设置csv文件的路径</span></span><br><span class="line"><span class="comment">     * 3，对此对cvs文件的数据和领域模型类做对应映射</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> FlatFileItemReader</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@StepScope</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> FlatFileItemReader&lt;BudgetVtoll&gt; <span class="title">reader</span><span class="params">(@Value(<span class="string">"#&#123;jobParameters['input.file.name']&#125;"</span>)</span> String pathToFile) </span>&#123;</span><br><span class="line">        FlatFileItemReader&lt;BudgetVtoll&gt; reader = <span class="keyword">new</span> FlatFileItemReader&lt;&gt;();</span><br><span class="line">        <span class="comment">// reader.setResource(new ClassPathResource(pathToFile));</span></span><br><span class="line">        reader.setResource(<span class="keyword">new</span> FileSystemResource(pathToFile));</span><br><span class="line">        reader.setLineMapper(<span class="keyword">new</span> DefaultLineMapper&lt;BudgetVtoll&gt;() &#123;</span><br><span class="line">            &#123;</span><br><span class="line">                setLineTokenizer(<span class="keyword">new</span> DelimitedLineTokenizer(<span class="string">","</span>) &#123;</span><br><span class="line">                    &#123;</span><br><span class="line">                        setNames(<span class="keyword">new</span> String[]&#123;</span><br><span class="line">                                <span class="string">"id"</span>,<span class="string">"year"</span>,<span class="string">"tollid"</span>,<span class="string">"budgetid"</span>, <span class="string">"cbudgetid"</span>, <span class="string">"version"</span>, <span class="string">"auditmsg"</span>, <span class="string">"trialstatus"</span>,</span><br><span class="line">                                <span class="string">"firauditer"</span>, <span class="string">"firaudittime"</span>, <span class="string">"finauditer"</span>, <span class="string">"finaudittime"</span>, <span class="string">"edittime"</span>, <span class="string">"startdate"</span>, <span class="string">"enddate"</span></span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                setFieldSetMapper(<span class="keyword">new</span> BeanWrapperFieldSetMapper&lt;BudgetVtoll&gt;() &#123;&#123;</span><br><span class="line">                    setTargetType(BudgetVtoll.class);</span><br><span class="line">                &#125;&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> reader;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ItemProcessor定义，用来处理数据</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ItemProcessor&lt;BudgetVtoll, BudgetVtoll&gt; <span class="title">processor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//使用我们自定义的ItemProcessor的实现CsvItemProcessor</span></span><br><span class="line">        CsvItemProcessor processor = <span class="keyword">new</span> CsvItemProcessor();</span><br><span class="line">        <span class="comment">//为processor指定校验器为CsvBeanValidator()</span></span><br><span class="line">        processor.setValidator(csvBeanValidator());</span><br><span class="line">        <span class="keyword">return</span> processor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ItemWriter定义，用来输出数据</span></span><br><span class="line"><span class="comment">     * spring能让容器中已有的Bean以参数的形式注入，Spring Boot已经为我们定义了dataSource</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ItemWriter&lt;BudgetVtoll&gt; <span class="title">writer</span><span class="params">(DruidDataSource dataSource)</span> </span>&#123;</span><br><span class="line">        JdbcBatchItemWriter&lt;BudgetVtoll&gt; writer = <span class="keyword">new</span> JdbcBatchItemWriter&lt;&gt;();</span><br><span class="line">        <span class="comment">//我们使用JDBC批处理的JdbcBatchItemWriter来写数据到数据库</span></span><br><span class="line">        writer.setItemSqlParameterSourceProvider(<span class="keyword">new</span> BeanPropertyItemSqlParameterSourceProvider&lt;&gt;());</span><br><span class="line"></span><br><span class="line">        String sql = <span class="string">"insert into BudgetVtoll "</span> + <span class="string">" (f_id,f_year,f_tollid,f_budgetid,f_cbudgetid,f_version,f_auditmsg,f_trialstatus,f_firauditer,f_firaudittime,f_finauditer,f_finaudittime,f_edittime,f_startdate,f_enddate) "</span></span><br><span class="line">                + <span class="string">" values(:id,:year,:tollid,:budgetid,:cbudgetid,:version,:auditmsg,:trialstatus,:firauditer,:firaudittime,:finauditer,:finaudittime,:edittime,:startdate,:enddate)"</span>;</span><br><span class="line">        <span class="comment">//在此设置要执行批处理的SQL语句</span></span><br><span class="line">        writer.setSql(sql);</span><br><span class="line">        writer.setDataSource(dataSource);</span><br><span class="line">        <span class="keyword">return</span> writer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * JobRepository，用来注册Job的容器</span></span><br><span class="line"><span class="comment">     * jobRepositor的定义需要dataSource和transactionManager，Spring Boot已为我们自动配置了</span></span><br><span class="line"><span class="comment">     * 这两个类，Spring可通过方法注入已有的Bean</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> transactionManager</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JobRepository <span class="title">jobRepository</span><span class="params">(DruidDataSource dataSource, PlatformTransactionManager transactionManager)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        JobRepositoryFactoryBean jobRepositoryFactoryBean = <span class="keyword">new</span> JobRepositoryFactoryBean();</span><br><span class="line">        jobRepositoryFactoryBean.setDataSource(dataSource);</span><br><span class="line">        jobRepositoryFactoryBean.setTransactionManager(transactionManager);</span><br><span class="line">        jobRepositoryFactoryBean.setDatabaseType(String.valueOf(DatabaseType.ORACLE));</span><br><span class="line">        <span class="comment">// 下面事务隔离级别的配置是针对Oracle的</span></span><br><span class="line">        jobRepositoryFactoryBean.setIsolationLevelForCreate(<span class="string">"ISOLATION_READ_COMMITTED"</span>);</span><br><span class="line">        jobRepositoryFactoryBean.afterPropertiesSet();</span><br><span class="line">        <span class="keyword">return</span> jobRepositoryFactoryBean.getObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * JobLauncher定义，用来启动Job的接口</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> transactionManager</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SimpleJobLauncher <span class="title">jobLauncher</span><span class="params">(DruidDataSource dataSource, PlatformTransactionManager transactionManager)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SimpleJobLauncher jobLauncher = <span class="keyword">new</span> SimpleJobLauncher();</span><br><span class="line">        jobLauncher.setJobRepository(jobRepository(dataSource, transactionManager));</span><br><span class="line">        <span class="keyword">return</span> jobLauncher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Job定义，我们要实际执行的任务，包含一个或多个Step</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> jobBuilderFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> s1</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Job <span class="title">importJob</span><span class="params">(JobBuilderFactory jobBuilderFactory, Step s1)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> jobBuilderFactory.get(<span class="string">"importJob"</span>)</span><br><span class="line">                .incrementer(<span class="keyword">new</span> RunIdIncrementer())</span><br><span class="line">                .flow(s1)<span class="comment">//为Job指定Step</span></span><br><span class="line">                .end()</span><br><span class="line">                .listener(csvJobListener())<span class="comment">//绑定监听器csvJobListener</span></span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * step步骤，包含ItemReader，ItemProcessor和ItemWriter</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> stepBuilderFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> reader</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> writer</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> processor</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Step <span class="title">step1</span><span class="params">(StepBuilderFactory stepBuilderFactory, ItemReader&lt;BudgetVtoll&gt; reader, ItemWriter&lt;BudgetVtoll&gt; writer,</span></span></span><br><span class="line"><span class="function"><span class="params">                      ItemProcessor&lt;BudgetVtoll, BudgetVtoll&gt; processor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stepBuilderFactory</span><br><span class="line">                .get(<span class="string">"step1"</span>)</span><br><span class="line">                .&lt;BudgetVtoll, BudgetVtoll&gt;chunk(<span class="number">65000</span>)<span class="comment">//批处理每次提交65000条数据</span></span><br><span class="line">                .reader(reader)<span class="comment">//给step绑定reader</span></span><br><span class="line">                .processor(processor)<span class="comment">//给step绑定processor</span></span><br><span class="line">                .writer(writer)<span class="comment">//给step绑定writer</span></span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CsvJobListener <span class="title">csvJobListener</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CsvJobListener();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Validator&lt;BudgetVtoll&gt; <span class="title">csvBeanValidator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MyBeanValidator&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，在定义Job的时候，我通过<code>@StepScope</code>注解，可以通过传递参数的方式将csv文件路径传进去。</p>
+<h3 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h3><p>最后再让我们写个测试类看看能不能成功：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(classes = Application.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BatchServiceTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JobLauncher jobLauncher;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Job importJob;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testBatch1</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        JobParameters jobParameters = <span class="keyword">new</span> JobParametersBuilder()</span><br><span class="line">                .addLong(<span class="string">"time"</span>, System.currentTimeMillis())</span><br><span class="line">                .addString(<span class="string">"input.file.name"</span>, <span class="string">"E:\\NT_BSC_BUDGETVTOLL.csv"</span>)</span><br><span class="line">                .toJobParameters();</span><br><span class="line">        jobLauncher.run(importJob, jobParameters);</span><br><span class="line">        logger.info(<span class="string">"testBatch1执行完成"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把csv文件放入resources/目录下面，然后执行测试。看看输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">: Job: [FlowJob: [name=importJob]] launched with the following parameters: [&#123;time=1517654976174, input.file.name=E:\NT_BSC_BUDGETVTOLL.csv&#125;]</span><br><span class="line">: 任务处理开始</span><br><span class="line">: Executing step: [step1]</span><br><span class="line">: 任务处理结束，总耗时=810ms</span><br><span class="line">: Job: [FlowJob: [name=importJob]] completed with the following parameters: [&#123;time=1517654976174, input.file.name=E:\NT_BSC_BUDGETVTOLL.csv&#125;] and the following status: [COMPLETED]</span><br><span class="line">: testBatch1执行完成</span><br></pre></td></tr></table></figure>
+<p>再去查看数据库里面的数据，已经正常写入了。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/sb-batch03.png" alt=""></p>
+<h2 id="并发执行多个Job"><a href="#并发执行多个Job" class="headerlink" title="并发执行多个Job"></a>并发执行多个Job</h2><p>SpringBatch批处理框架默认使用单线程完成所有任务的执行，官方推荐配置任务执行器来并发执行，
+提高批处理的效率。</p>
+<p>Spring Core 为我们提供了多种执行器实现（包括多种异步执行器），我们可以根据实际情况灵活选择使用。</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>描述</th>
+<th>是否异步</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SyncTaskExecutor</td>
+<td>简单同步执行器</td>
+<td>否</td>
+</tr>
+<tr>
+<td>SimpleAsyncTaskExecutor</td>
+<td>简单异步执行器，提供最基本的异步实现</td>
+<td>是</td>
+</tr>
+<tr>
+<td>WorkManagerTaskExecutor</td>
+<td>该类作为通过 JCA 规范进行任务执行的实现</td>
+<td>是</td>
+</tr>
+<tr>
+<td>ThreadPoolTaskExecutor</td>
+<td>线程池任务执行器</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>配置线程池执行Job：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ThreadPoolTaskExecutor <span class="title">taskExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ThreadPoolTaskExecutor taskExecutor = <span class="keyword">new</span> ThreadPoolTaskExecutor();</span><br><span class="line">    taskExecutor.setCorePoolSize(<span class="number">5</span>);</span><br><span class="line">    taskExecutor.setMaxPoolSize(<span class="number">10</span>);</span><br><span class="line">    taskExecutor.setQueueCapacity(<span class="number">200</span>);</span><br><span class="line">    <span class="keyword">return</span> taskExecutor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SimpleJobLauncher <span class="title">jobLauncher</span><span class="params">(ThreadPoolTaskExecutor taskExecutor, DruidDataSource dataSource,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     PlatformTransactionManager transactionManager)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    SimpleJobLauncher jobLauncher = <span class="keyword">new</span> SimpleJobLauncher();</span><br><span class="line">    jobLauncher.setTaskExecutor(taskExecutor);</span><br><span class="line">    jobLauncher.setJobRepository(jobRepository(dataSource, transactionManager));</span><br><span class="line">    <span class="keyword">return</span> jobLauncher;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重点是上面的那句<code>jobLauncher.setTaskExecutor(taskExecutor);</code></p>
+<p>这里的并发表示的是执行不同的Job使用线程池，每个Job实例会分配一个线程去执行。这个是最推荐的做法。</p>
+<p>如果你还想对单个Job执行逻辑采用多线程，可以再Step配置中加入线程池支持，不过需要保证你所有的Step都是线程安全的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> stepBuilderFactory</span><br><span class="line">    .get(<span class="string">"logStep1"</span>)</span><br><span class="line">    <span class="comment">//设置每个Job通过并发方式执行，一般来讲一个Job就让它串行完成的好</span></span><br><span class="line">    .taskExecutor(<span class="keyword">new</span> SimpleAsyncTaskExecutor())</span><br><span class="line">    <span class="comment">//并发任务数为 10,默认为4</span></span><br><span class="line">    .throttleLimit(<span class="number">10</span>)</span><br><span class="line">    .build();</span><br></pre></td></tr></table></figure>
+<p>这里我通过一个实际例子展示如何编写多个Job并发执行。</p>
+<p>还是跟上面例子一样，将csv文件导入到表中，但是这个时候有两个csv文件，我要导入到两张表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Z_TEST_APP (</span><br><span class="line">    appid <span class="built_in">INT</span>,</span><br><span class="line">    zname VARCHAR2 (<span class="number">20</span>),</span><br><span class="line">    flag VARCHAR2 (<span class="number">2</span>),</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> app_pk PRIMARY <span class="keyword">KEY</span> (appid)</span><br><span class="line"> );</span><br><span class="line"></span><br><span class="line"> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Z_TEST_LOG (</span><br><span class="line">    logid <span class="built_in">INT</span>,</span><br><span class="line">    msg VARCHAR2 (<span class="number">20</span>),</span><br><span class="line">    logtime VARCHAR2 (<span class="number">8</span>),</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> log_pk PRIMARY <span class="keyword">KEY</span> (logid)</span><br><span class="line"> );</span><br></pre></td></tr></table></figure>
+<p>每个类型任务单独创建一个package，然后里面放两个类。以APP为例：</p>
+<p>创建一个App类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> appid;</span><br><span class="line">    <span class="keyword">private</span> String zname;</span><br><span class="line">    <span class="keyword">private</span> String flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后创建一个AppConfig类配置任务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ItemReader定义,用来读取数据</span></span><br><span class="line"><span class="comment">     * 1，使用FlatFileItemReader读取文件</span></span><br><span class="line"><span class="comment">     * 2，使用FlatFileItemReader的setResource方法设置csv文件的路径</span></span><br><span class="line"><span class="comment">     * 3，对此对cvs文件的数据和领域模型类做对应映射</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> FlatFileItemReader</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"appReader"</span>)</span><br><span class="line">    <span class="meta">@StepScope</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> FlatFileItemReader&lt;App&gt; <span class="title">reader</span><span class="params">(@Value(<span class="string">"#&#123;jobParameters['input.file.name']&#125;"</span>)</span> String pathToFile) </span>&#123;</span><br><span class="line">        FlatFileItemReader&lt;App&gt; reader = <span class="keyword">new</span> FlatFileItemReader&lt;&gt;();</span><br><span class="line">        reader.setResource(<span class="keyword">new</span> FileSystemResource(pathToFile));</span><br><span class="line">        reader.setLineMapper(<span class="keyword">new</span> DefaultLineMapper&lt;App&gt;() &#123;</span><br><span class="line">            &#123;</span><br><span class="line">                setLineTokenizer(<span class="keyword">new</span> DelimitedLineTokenizer(<span class="string">"|"</span>) &#123;</span><br><span class="line">                    &#123;</span><br><span class="line">                        setNames(<span class="keyword">new</span> String[]&#123;</span><br><span class="line">                                <span class="string">"appid"</span>, <span class="string">"zname"</span>, <span class="string">"flag"</span></span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                setFieldSetMapper(<span class="keyword">new</span> BeanWrapperFieldSetMapper&lt;App&gt;() &#123;&#123;</span><br><span class="line">                    setTargetType(App.class);</span><br><span class="line">                &#125;&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> reader;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ....后面省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，每个Bean配置都加一个name属性，然后自动注入里面需要通过@Qualifier注解来指定当前类中的Bean，
+因为如果不指定name，Spring默认只会初始化一个Bean实例。</p>
+<p>比如定义Job：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(name = <span class="string">"zappJob"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Job <span class="title">zappJob</span><span class="params">(JobBuilderFactory jobBuilderFactory, @Qualifier(<span class="string">"zappStep1"</span>)</span> Step s1) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> jobBuilderFactory.get(<span class="string">"zappJob"</span>)</span><br><span class="line">            .incrementer(<span class="keyword">new</span> RunIdIncrementer())</span><br><span class="line">            .flow(s1)<span class="comment">//为Job指定Step</span></span><br><span class="line">            .end()</span><br><span class="line">            .listener(<span class="keyword">new</span> MyJobListener(<span class="string">"App"</span>))<span class="comment">//绑定监听器csvJobListener</span></span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外一个LOG任务的配置也是同样。</p>
+<p>好了，定义完成之后开始写测试方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testTwoJobs</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    JobParameters jobParameters1 = <span class="keyword">new</span> JobParametersBuilder()</span><br><span class="line">            .addLong(<span class="string">"time"</span>, System.currentTimeMillis())</span><br><span class="line">            .addString(<span class="string">"input.file.name"</span>, p.getCsvApp())</span><br><span class="line">            .toJobParameters();</span><br><span class="line">    jobLauncher.run(zappJob, jobParameters1);</span><br><span class="line"></span><br><span class="line">    JobParameters jobParameters2 = <span class="keyword">new</span> JobParametersBuilder()</span><br><span class="line">            .addLong(<span class="string">"time"</span>, System.currentTimeMillis())</span><br><span class="line">            .addString(<span class="string">"input.file.name"</span>, p.getCsvLog())</span><br><span class="line">            .toJobParameters();</span><br><span class="line">    jobLauncher.run(zlogJob, jobParameters2);</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">"main线程完成"</span>);</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        Thread.sleep(<span class="number">2000000L</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个是运行日志:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[ taskExecutor-1] o.s.b.c.l.support.SimpleJobLauncher      : Job: [FlowJob: [name=zappJob]] launched with t</span><br><span class="line">[ taskExecutor-1] com.xncoding.trans.modules.MyJobListener  : 任务-App处理开始</span><br><span class="line">[           main] com.xncoding.service.BatchServiceTest     : main线程完成</span><br><span class="line">[ taskExecutor-2] o.s.b.c.l.support.SimpleJobLauncher      : Job: [FlowJob: [name=zlogJob]] launched with t</span><br><span class="line">[ taskExecutor-2] com.xncoding.trans.modules.MyJobListener  : 任务-Log处理开始</span><br><span class="line">[ taskExecutor-1] o.s.batch.core.job.SimpleStepHandler     : Executing step: [zappStep1]</span><br><span class="line">[ taskExecutor-2] o.s.batch.core.job.SimpleStepHandler     : Executing step: [logStep1]</span><br><span class="line">[ taskExecutor-2] com.xncoding.trans.modules.MyJobListener  : 任务-Log处理结束，总耗时=495ms</span><br><span class="line">[ taskExecutor-1] com.xncoding.trans.modules.MyJobListener  : 任务-App处理结束，总耗时=585ms</span><br><span class="line">[ taskExecutor-2] o.s.b.c.l.support.SimpleJobLauncher      : Job: [FlowJob: [name=zlogJob]] completed with </span><br><span class="line">[ taskExecutor-1] o.s.b.c.l.support.SimpleJobLauncher      : Job: [FlowJob: [name=zappJob]] completed with</span><br></pre></td></tr></table></figure>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>默认情况下，Spring Batch遇到异常的时候会终止处理，比如遇到csv文件中解析错误就会终止异常。如果我想忽略掉这些异常继续处理，
+可以配置在Reader中忽略异常。</p>
+<p>这个在Step的定义中配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> stepBuilderFactory</span><br><span class="line">    .get(<span class="string">"logStep1"</span>)</span><br><span class="line">    .&lt;Log, Log&gt;chunk(<span class="number">5000</span>)<span class="comment">//批处理每次提交5000条数据</span></span><br><span class="line">    .reader(reader)<span class="comment">//给step绑定reader</span></span><br><span class="line">    .processor(processor)<span class="comment">//给step绑定processor</span></span><br><span class="line">    .writer(writer)<span class="comment">//给step绑定writer</span></span><br><span class="line">    .faultTolerant()</span><br><span class="line">    .retry(Exception.class)   <span class="comment">// 重试</span></span><br><span class="line">    .noRetry(ParseException.class)</span><br><span class="line">    .retryLimit(<span class="number">1</span>)           <span class="comment">//每条记录重试一次</span></span><br><span class="line">    .skip(Exception.class)</span><br><span class="line">    .skipLimit(<span class="number">200</span>)         <span class="comment">//一共允许跳过200次异常</span></span><br><span class="line"><span class="comment">//                .taskExecutor(new SimpleAsyncTaskExecutor()) //设置每个Job通过并发方式执行，一般来讲一个Job就让它串行完成的好</span></span><br><span class="line"><span class="comment">//                .throttleLimit(10)        //并发任务数为 10,默认为4</span></span><br><span class="line">    .build();</span><br></pre></td></tr></table></figure>
+<p>上面定义了使用可容忍异常模式，遇到Exception异常就重试1次，对于ParseException异常不重试，所有异常都会忽略掉，不会导致程序终止。
+但是最大允许跳过200次异常，超过这个数字就终止执行了。</p>
+<p>然后改一下csv文件，把某个字段改大点，超过数据库中定义长度：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1|等哈哈哈|01</span><br><span class="line">2|等哈哈哈|02</span><br><span class="line">3|等哈哈哈|025555</span><br><span class="line">4|等哈哈哈|02</span><br><span class="line">5|等哈哈哈|02</span><br></pre></td></tr></table></figure>
+<p>重新执行发现正常执行完成，数据库中只插入了4条数据，id为3的没有。</p>
+<h2 id="通用配置"><a href="#通用配置" class="headerlink" title="通用配置"></a>通用配置</h2><p>更进一步，如果有多个CSV文件需要导入，那么安装上面的写法。每次都要定义一个新的Config类，一个新的Bean类，代码重复率很高。</p>
+<p>实际上可以定义一个通用配置，去掉里面的显示Bean类，通过Java反射机制，还有@StepScope注解，
+实现每次运行时候根据JobParameters初始化不同的Job。</p>
+<p>如果有一个新的CSV文件需要导入，只需要新建一个Bean，定义好相应的列，然后将Bean的属性列表、插入SQL语句作为参数传入即可。</p>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试一个配置类，可同时运行多个任务</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception 异常</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCommonJobs</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    JobParameters jobParameters1 = <span class="keyword">new</span> JobParametersBuilder()</span><br><span class="line">            .addLong(<span class="string">"time"</span>,System.currentTimeMillis())</span><br><span class="line">            .addString(KEY_JOB_NAME, <span class="string">"App"</span>)</span><br><span class="line">            .addString(KEY_FILE_NAME, p.getCsvApp())</span><br><span class="line">            .addString(KEY_VO_NAME, <span class="string">"com.xncoding.trans.modules.zapp.App"</span>)</span><br><span class="line">            .addString(KEY_COLUMNS, String.join(<span class="string">","</span>, <span class="keyword">new</span> String[]&#123;</span><br><span class="line">                    <span class="string">"appid"</span>, <span class="string">"zname"</span>, <span class="string">"flag"</span></span><br><span class="line">            &#125;))</span><br><span class="line">            .addString(KEY_SQL, <span class="string">"insert into z_test_App (appid, zname, flag) values(:appid, :zname, :flag)"</span>)</span><br><span class="line">            .toJobParameters();</span><br><span class="line">    jobLauncher.run(commonJob, jobParameters1);</span><br><span class="line"></span><br><span class="line">    JobParameters jobParameters2 = <span class="keyword">new</span> JobParametersBuilder()</span><br><span class="line">            .addLong(<span class="string">"time"</span>,System.currentTimeMillis())</span><br><span class="line">            .addString(KEY_JOB_NAME, <span class="string">"Log"</span>)</span><br><span class="line">            .addString(KEY_FILE_NAME, p.getCsvLog())</span><br><span class="line">            .addString(KEY_VO_NAME, <span class="string">"com.xncoding.trans.modules.zlog.Log"</span>)</span><br><span class="line">            .addString(KEY_COLUMNS, String.join(<span class="string">","</span>, <span class="keyword">new</span> String[]&#123;</span><br><span class="line">                    <span class="string">"logid"</span>, <span class="string">"msg"</span>, <span class="string">"logtime"</span></span><br><span class="line">            &#125;))</span><br><span class="line">            .addString(KEY_SQL, <span class="string">"insert into z_test_Log (logid, msg, logtime) values(:logid, :msg, :logtime)"</span>)</span><br><span class="line">            .toJobParameters();</span><br><span class="line">    jobLauncher.run(commonJob, jobParameters2);</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">"Main线程执行完成"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        Thread.sleep(<span class="number">2000000L</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><p>在进行Oracle操作的时候报一个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORA-08177: 无法连续访问此事务处理</span><br></pre></td></tr></table></figure>
+<p>原因：Spring Batch 默认是 <code>ISOLATION_SERIALIZABLE</code></p>
+<p>官方文档说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The default is ISOLATION_SERIALIZABLE, which prevents accidental concurrent execution of the same job (ISOLATION_REPEATABLE_READ would work as well).</span><br></pre></td></tr></table></figure>
+<p>而Oracle默认的事务隔离级别是ISOLATION_READ_COMMITTED</p>
+<p>解决方案就是修改<code>JobRepositoryFactoryBean</code>的定义，加一个配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jobRepositoryFactoryBean.setIsolationLevelForCreate(<span class="string">"ISOLATION_READ_COMMITTED"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="GitHub源码"><a href="#GitHub源码" class="headerlink" title="GitHub源码"></a>GitHub源码</h2><p><a href="https://github.com/yidao620c/SpringBootBucket/tree/master/springboot-batch" target="_blank" rel="noopener">springboot-batch</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/30/spring/sb-redis/" rel="next" title="SpringBoot系列 - Redis数据库">
+                <i class="fa fa-chevron-left"></i> SpringBoot系列 - Redis数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/06/spring/sb-rabbitmq/" rel="prev" title="SpringBoot系列 - 使用消息队列RabbitMQ">
+                SpringBoot系列 - 使用消息队列RabbitMQ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="Yahkun Ding" />
+            
+              <p class="site-author-name" itemprop="name">Yahkun Ding</p>
+              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">186</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yahkun" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yahkun@foxmail.com" target="_blank" title="E-mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list" style="list-style: none;">
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.infoq.com/cn/" title="InfoQ" target="_blank">InfoQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://blog.jobbole.com/" title="伯乐在线" target="_blank">伯乐在线</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#框架介绍"><span class="nav-number">1.</span> <span class="nav-text">框架介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JobRepository"><span class="nav-number">1.1.</span> <span class="nav-text">JobRepository</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JobLauncher"><span class="nav-number">1.2.</span> <span class="nav-text">JobLauncher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Job"><span class="nav-number">1.3.</span> <span class="nav-text">Job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step"><span class="nav-number">1.4.</span> <span class="nav-text">Step</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Job监听器"><span class="nav-number">1.5.</span> <span class="nav-text">Job监听器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据校验"><span class="nav-number">1.6.</span> <span class="nav-text">数据校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot集成实例"><span class="nav-number">2.</span> <span class="nav-text">SpringBoot集成实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加maven依赖"><span class="nav-number">2.1.</span> <span class="nav-text">添加maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置application-yml"><span class="nav-number">2.2.</span> <span class="nav-text">配置application.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#领域模型类"><span class="nav-number">2.3.</span> <span class="nav-text">领域模型类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据处理及校验"><span class="nav-number">2.4.</span> <span class="nav-text">数据处理及校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务监听器"><span class="nav-number">2.5.</span> <span class="nav-text">任务监听器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置类"><span class="nav-number">2.6.</span> <span class="nav-text">配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试类"><span class="nav-number">2.7.</span> <span class="nav-text">测试类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发执行多个Job"><span class="nav-number">3.</span> <span class="nav-text">并发执行多个Job</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常处理"><span class="nav-number">4.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通用配置"><span class="nav-number">5.</span> <span class="nav-text">通用配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FAQ"><span class="nav-number">6.</span> <span class="nav-text">FAQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub源码"><span class="nav-number">7.</span> <span class="nav-text">GitHub源码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yahkun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">361.2k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">粤ICP备17025554号-1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yahkun',
+            repo: 'comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '56fd98792841961d31a92ce3a2b5ba36e7bc2f17',
+            
+                client_id: '608d980b75fc48a1873e'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

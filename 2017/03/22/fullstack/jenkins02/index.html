@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="jenkins," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="秦时明月" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前面一篇介绍了Jenkins的入门安装和简单演示，这篇讲解最核心的Pipeline部分。 Jenkins Pipeline 就是一系列的插件集合，可通过组合它们来实现持续集成和交付的功能。 通过Pipeline DSL为我们提供了一个可扩展的工具集，将简单到复杂的逻辑通过代码实现。 通常，我们可以通过编写Jenkinsfile将管道代码化，并且纳入到版本管理系统中。比如：">
+<meta name="keywords" content="jenkins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins持续集成 - 管道详解">
+<meta property="og:url" content="http://yoursite.com/2017/03/22/fullstack/jenkins02/index.html">
+<meta property="og:site_name" content="秦时明月">
+<meta property="og:description" content="前面一篇介绍了Jenkins的入门安装和简单演示，这篇讲解最核心的Pipeline部分。 Jenkins Pipeline 就是一系列的插件集合，可通过组合它们来实现持续集成和交付的功能。 通过Pipeline DSL为我们提供了一个可扩展的工具集，将简单到复杂的逻辑通过代码实现。 通常，我们可以通过编写Jenkinsfile将管道代码化，并且纳入到版本管理系统中。比如：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins07.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins08.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins09.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins10.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins11.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins12.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins13.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins14.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins15.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins16.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins17.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins18.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins19.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins20.png">
+<meta property="og:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins21.png">
+<meta property="og:updated_time" content="2018-09-17T20:22:55.613Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jenkins持续集成 - 管道详解">
+<meta name="twitter:description" content="前面一篇介绍了Jenkins的入门安装和简单演示，这篇讲解最核心的Pipeline部分。 Jenkins Pipeline 就是一系列的插件集合，可通过组合它们来实现持续集成和交付的功能。 通过Pipeline DSL为我们提供了一个可扩展的工具集，将简单到复杂的逻辑通过代码实现。 通常，我们可以通过编写Jenkinsfile将管道代码化，并且纳入到版本管理系统中。比如：">
+<meta name="twitter:image" content="https://xnstatic-1253397658.file.myqcloud.com/jenkins07.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"Oops, no results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/22/fullstack/jenkins02/"/>
+
+
+
+
+
+  <title>Jenkins持续集成 - 管道详解 | 秦时明月</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦时明月</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code the world, trave the world.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/22/fullstack/jenkins02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yahkun Ding">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦时明月">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jenkins持续集成 - 管道详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T09:32:16+08:00">
+                2017-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fullstack/" itemprop="url" rel="index">
+                    <span itemprop="name">fullstack</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/22/fullstack/jenkins02/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/03/22/fullstack/jenkins02/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,583 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前面一篇介绍了Jenkins的入门安装和简单演示，这篇讲解最核心的Pipeline部分。</p>
+<p>Jenkins Pipeline 就是一系列的插件集合，可通过组合它们来实现持续集成和交付的功能。
+通过<code>Pipeline DSL</code>为我们提供了一个可扩展的工具集，将简单到复杂的逻辑通过代码实现。</p>
+<p>通常，我们可以通过编写<code>Jenkinsfile</code>将管道代码化，并且纳入到版本管理系统中。比如：<a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any ①</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Build&apos;) &#123; ②</span><br><span class="line">            steps &#123; ③</span><br><span class="line">                sh &apos;make&apos; ④</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Test&apos;)&#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &apos;make check&apos;</span><br><span class="line">                junit &apos;reports/**/*.xml&apos; ⑤</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Deploy&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &apos;make publish&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Script //</span><br><span class="line">node &#123;</span><br><span class="line">    stage(&apos;Build&apos;) &#123;</span><br><span class="line">        sh &apos;make&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    stage(&apos;Test&apos;) &#123;</span><br><span class="line">        sh &apos;make check&apos;</span><br><span class="line">        junit &apos;reports/**/*.xml&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    stage(&apos;Deploy&apos;) &#123;</span><br><span class="line">        sh &apos;make publish&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>① agent 指示Jenkins分配一个执行器和工作空间来执行下面的Pipeline</li>
+<li>② stage 表示这个Pipeline的一个执行阶段</li>
+<li>③ steps 表示在这个stage中每一个步骤</li>
+<li>④ sh 执行指定的命令</li>
+<li>⑤ junit 是插件<code>junit[JUnit plugin]</code>提供的一个管道步骤，用来收集测试报告</li>
+</ul>
+<h2 id="管道名词"><a href="#管道名词" class="headerlink" title="管道名词"></a>管道名词</h2><p>几个重要的名词，讲一下它们是什么意思：</p>
+<ul>
+<li>Step 一个简单的执行步骤，比如执行一个sh脚本</li>
+<li>Stage 将你的命令组织成一个更高一层的逻辑单元</li>
+<li>Node 指定这些任务在哪执行</li>
+</ul>
+<p>Stage和Step可以放到一个Node下面执行，不指定就默认在master节点上面执行。
+另外Node和Step也能组合成一个Stage。</p>
+<h2 id="定义管道"><a href="#定义管道" class="headerlink" title="定义管道"></a>定义管道</h2><p>有两种定义管道的方式，一种是通过Web UI来定义，一种是直接写<code>Jenkinsfile</code>。推荐后面一种，因为可以纳入版本管理系统。</p>
+<h3 id="Web-UI方式"><a href="#Web-UI方式" class="headerlink" title="Web UI方式"></a>Web UI方式</h3><p>这里先介绍第一种方式，通过Web UI，首先点击“新建”：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins07.png" alt=""></p>
+<p>填写一个名字，然后选择<code>Pipeline</code></p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins08.png" alt=""></p>
+<p>点击“OK”后，在<code>Script</code>中写一个简单的命令：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins09.png" alt=""></p>
+<p>保存后，点击左侧的“立即构建”：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins10.png" alt=""></p>
+<p>然后在“Build History”下面点击“#1”进入此次构建详情，再点击左侧的“Console Output”查看输出：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins11.png" alt=""></p>
+<p>我们看到了打印出来的“hello world”说明成功运行。</p>
+<p>上面的例子演示了通过Web UI创建的一个最基本的管道执行成功的案例。使用2个步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Script //</span><br><span class="line">node &#123; ①</span><br><span class="line">    echo &apos;Hello World&apos; ②</span><br><span class="line">&#125;</span><br><span class="line">// Declarative not yet implemented //</span><br></pre></td></tr></table></figure>
+<ul>
+<li>① node 在Jenkins环境中分配一个执行器和工作空间</li>
+<li>② echo 在控制台输出一个简单的字符串</li>
+</ul>
+<h3 id="Jenkinsfile方式"><a href="#Jenkinsfile方式" class="headerlink" title="Jenkinsfile方式"></a>Jenkinsfile方式</h3><p>上面通过Web UI方式只适用于非常简单的任务，而大型复杂的任务最好采用<code>Jenkinsfile</code>方式并纳入SCM管理。
+这次我选择从SCM中的<code>Jenkinsfile</code>来定义管道。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins12.png" alt=""></p>
+<p>我这里配置了一个git仓库位置，然后我在该项目根目录放一个<code>Jenkinsfile</code>，其实就是我上一篇里演示的。</p>
+<h3 id="Poll-SCM-触发器"><a href="#Poll-SCM-触发器" class="headerlink" title="Poll SCM 触发器"></a>Poll SCM 触发器</h3><p>选择<code>Build Trigger</code>为<code>Poll SCM</code>，定时检查是否有push操作，这里我设置每隔2分钟检查一次。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins13.png" alt=""></p>
+<h3 id="Push触发器"><a href="#Push触发器" class="headerlink" title="Push触发器"></a>Push触发器</h3><p>这个触发器我更加推荐，因为是实时的，但是需要先配置gitlab的Webhook。</p>
+<p>选择</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Build when a change is pushed to GitLab. GitLab CI Service URL: http://192.168.217.161:8080/project/scm-example</span><br></pre></td></tr></table></figure>
+<p>复制后面那个URL，然后登录gitlab项目打开项目配置<code>Web Hook</code>，如果没有配置SSL可以将证书检查取消：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins14.png" alt=""></p>
+<p>增加后可点击下面的<code>测试</code>，上面显示：<code>钩子执行成功：HTTP 200</code>则表示没问题。</p>
+<p>然后再来jenkins里面配置push触发器，还能选择你要过滤那些分支，比如我只响应master分支上面的push操作。可以这样：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins15.png" alt=""></p>
+<p>push钩子的大致流程是这样的：</p>
+<ol>
+<li>push代码，Gitlab触发hook，访问Jenkins提供的api</li>
+<li><code>Jenkins Branch Filter</code>系统判断自己需要处理的分支是否有改动，如果有开始构建</li>
+<li>运行构建脚本</li>
+</ol>
+<p>然后我再来测试下，修改代码，提交后push到远程仓库中，看到效果正常触发了：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins16.png" alt=""></p>
+<p>Tips: 每个<code>Jenkinsfile</code>文件都应该以<code>#!groovy</code>为开头第一行</p>
+<h2 id="使用Jenkinsfile"><a href="#使用Jenkinsfile" class="headerlink" title="使用Jenkinsfile"></a>使用Jenkinsfile</h2><p>接下来详细介绍一下怎样编写<code>Jenkinsfile</code>来完成各种复杂的任务。</p>
+<p>Pipeline支持两种形式，一种是<code>Declarative</code>管道，一个是<code>Scripted</code>管道。</p>
+<p>一个<code>Jenkinsfile</code>就是一个文本文件，里面定义了<code>Jenkins Pipeline</code>。
+将这个文本文件放到项目的根目录下面，纳入版本系统。</p>
+<h3 id="部署三阶段"><a href="#部署三阶段" class="headerlink" title="部署三阶段"></a>部署三阶段</h3><p>一般我们的持续交付都有三个部分：Build、Test、Deploy，典型写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Build&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Building..&apos;</span><br><span class="line">                sh &apos;make&apos;</span><br><span class="line">                archiveArtifacts artifacts: &apos;**/target/*.jar&apos;, fingerprint: true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Test&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Testing..&apos;</span><br><span class="line">                /* `make check` returns non-zero on test failures,</span><br><span class="line">                 *  using `true` to allow the Pipeline to continue nonetheless</span><br><span class="line">                 */</span><br><span class="line">                sh &apos;make check || true&apos; ①</span><br><span class="line">                junit &apos;**/target/*.xml&apos; ②</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Deploy&apos;) &#123;</span><br><span class="line">            when &#123;</span><br><span class="line">                expression &#123;</span><br><span class="line">                    /*如果测试失败，状态为UNSTABLE*/</span><br><span class="line">                    currentBuild.result == null || currentBuild.result == &apos;SUCCESS&apos; ①</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Deploying..&apos;</span><br><span class="line">                sh &apos;make publish&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p>Jenkins定了很多内置的环境变量，可在文档<code>localhost:8080/pipeline-syntax/globals#env</code>找到，
+通过<code>env</code>直接使用它们：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Running $&#123;env.BUILD_ID&#125; on $&#123;env.JENKINS_URL&#125;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>设置环境变量：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    environment &#123;</span><br><span class="line">        CC = &apos;clang&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            environment &#123;</span><br><span class="line">                DEBUG_FLAGS = &apos;-g&apos;</span><br><span class="line">            &#125;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &apos;printenv&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用多个agent"><a href="#使用多个agent" class="headerlink" title="使用多个agent"></a>使用多个agent</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent none</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Build&apos;) &#123;</span><br><span class="line">            agent any</span><br><span class="line">            steps &#123;</span><br><span class="line">                checkout scm</span><br><span class="line">                sh &apos;make&apos;</span><br><span class="line">                stash includes: &apos;**/target/*.jar&apos;, name: &apos;app&apos; ①</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Test on Linux&apos;) &#123;</span><br><span class="line">            agent &#123; ②</span><br><span class="line">                label &apos;linux&apos;</span><br><span class="line">            &#125;</span><br><span class="line">            steps &#123;</span><br><span class="line">                unstash &apos;app&apos; ③</span><br><span class="line">                sh &apos;make check&apos;</span><br><span class="line">            &#125;</span><br><span class="line">            post &#123;</span><br><span class="line">                always &#123;</span><br><span class="line">                    junit &apos;**/target/*.xml&apos;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Test on Windows&apos;) &#123;</span><br><span class="line">            agent &#123;</span><br><span class="line">                label &apos;windows&apos;</span><br><span class="line">            &#125;</span><br><span class="line">            steps &#123;</span><br><span class="line">                unstash &apos;app&apos;</span><br><span class="line">                bat &apos;make check&apos; ④</span><br><span class="line">            &#125;</span><br><span class="line">            post &#123;</span><br><span class="line">                always &#123;</span><br><span class="line">                    junit &apos;**/target/*.xml&apos;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子，在任一台机器上面做Build操作，并通过<code>stash</code>命令保存文件，然后分别在两台agent机器上面做测试。
+注意这里所有步骤都是串行执行的。</p>
+<h3 id="Multibranch-Pipeline"><a href="#Multibranch-Pipeline" class="headerlink" title="Multibranch Pipeline"></a>Multibranch Pipeline</h3><p>多分支管道可以让你在同一个项目中，对每个分支定义一个执行管道。Jenkins或自动发现、管理并执行包含<code>Jenkinsfile</code>文件的分支。</p>
+<p>这个在前面一篇已经演示过怎样创建这样的Pipeline了，就不再多讲。</p>
+<h2 id="Pipeline语法"><a href="#Pipeline语法" class="headerlink" title="Pipeline语法"></a>Pipeline语法</h2><p>先讲<code>Declarative Pipeline</code>，所有声明式管道都必须包含在<code>pipeline</code>块中：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    /* insert Declarative Pipeline here */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>块里面的语句和表达式都是Groovy语法，遵循以下规则：</p>
+<ol>
+<li>最顶层规定就是<code>pipeline { }</code></li>
+<li>语句结束不需要分好，一行一条语句</li>
+<li>块中只能包含<code>Sections</code>, <code>Directives</code>, <code>Steps</code>或者赋值语句</li>
+<li>属性引用语句被当成是无参方法调用，比如<code>input</code>实际上就是方法<code>input()</code>调用</li>
+</ol>
+<p>接下来我详细讲解下<code>Sections</code>, <code>Directives</code>, <code>Steps</code>这三个东西</p>
+<h3 id="Sections"><a href="#Sections" class="headerlink" title="Sections"></a>Sections</h3><p><code>Sections</code>在声明式管道中包含一个或多个<code>Directives</code>, <code>Steps</code></p>
+<h4 id="post"><a href="#post" class="headerlink" title="post"></a>post</h4><p><code>post</code> section 定义了管道执行结束后要进行的操作。支持在里面定义很多<code>Conditions</code>块：
+<code>always</code>, <code>changed</code>, <code>failure</code>, <code>success</code> 和 <code>unstable</code>。
+这些条件块会根据不同的返回结果来执行不同的逻辑。</p>
+<ul>
+<li>always：不管返回什么状态都会执行</li>
+<li>changed：如果当前管道返回值和上一次已经完成的管道返回值不同时候执行</li>
+<li>failure：当前管道返回状态值为”failed”时候执行，在Web UI界面上面是红色的标志</li>
+<li>success：当前管道返回状态值为”success”时候执行，在Web UI界面上面是绿色的标志</li>
+<li>unstable：当前管道返回状态值为”unstable”时候执行，通常因为测试失败，代码不合法引起的。在Web UI界面上面是黄色的标志</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Hello World&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    post &#123; ①</span><br><span class="line">        always &#123; ②</span><br><span class="line">            echo &apos;I will always say Hello again!&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="stages"><a href="#stages" class="headerlink" title="stages"></a>stages</h4><p>由一个或多个<code>stage</code>指令组成，stages块也是核心逻辑的部分。
+我们建议对于每个独立的交付部分（比如<code>Build</code>,<code>Test</code>,<code>Deploy</code>）都应该至少定义一个<code>stage</code>指令。比如：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123; ①</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">        steps &#123;</span><br><span class="line">            echo &apos;Hello World&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="steps"><a href="#steps" class="headerlink" title="steps"></a>steps</h4><p>在<code>stage</code>中定义一系列的<code>step</code>来执行命令。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123; ①</span><br><span class="line">                echo &apos;Hello World&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Directives"><a href="#Directives" class="headerlink" title="Directives"></a>Directives</h3><p>jenkins中的各种指令</p>
+<h4 id="agent"><a href="#agent" class="headerlink" title="agent"></a>agent</h4><p><code>agent</code>指令指定整个管道或某个特定的<code>stage</code>的执行环境。它的参数可用使用：</p>
+<ol>
+<li>any    - 任意一个可用的agent</li>
+<li>none   - 如果放在pipeline顶层，那么每一个<code>stage</code>都需要定义自己的<code>agent</code>指令</li>
+<li>label  - 在jenkins环境中指定标签的agent上面执行，比如<code>agent { label &#39;my-defined-label&#39; }</code></li>
+<li>node   - <code>agent { node { label &#39;labelName&#39; } }</code> 和 label一样，但是可用定义更多可选项</li>
+<li>docker - 指定在docker容器中运行</li>
+<li>dockerfile - 使用源码根目录下面的<code>Dockerfile</code>构建容器来运行</li>
+</ol>
+<h4 id="environment"><a href="#environment" class="headerlink" title="environment"></a>environment</h4><p><code>environment</code>定义键值对的环境变量
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    environment &#123; ①</span><br><span class="line">        CC = &apos;clang&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            environment &#123; ②</span><br><span class="line">                AN_ACCESS_KEY = credentials(&apos;my-prefined-secret-text&apos;) ③</span><br><span class="line">            &#125;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &apos;printenv&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="options"><a href="#options" class="headerlink" title="options"></a>options</h4><p>还能定义一些管道特定的选项，介绍几个常用的：</p>
+<ul>
+<li>skipDefaultCheckout - 在<code>agent</code>指令中忽略源码<code>checkout</code>这一步骤。</li>
+<li>timeout - 超时设置<code>options { timeout(time: 1, unit: &#39;HOURS&#39;) }</code></li>
+<li>retry - 直到成功的重试次数<code>options { retry(3) }</code></li>
+<li>timestamps - 控制台输出前面加时间戳<code>options { timestamps() }</code></li>
+</ul>
+<h4 id="parameters"><a href="#parameters" class="headerlink" title="parameters"></a>parameters</h4><p>参数指令，触发这个管道需要用户指定的参数，然后在<code>step</code>中通过<code>params</code>对象访问这些参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    parameters &#123;</span><br><span class="line">        string(name: &apos;PERSON&apos;, defaultValue: &apos;Mr Jenkins&apos;, description: &apos;Who should I say hello to?&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &quot;Hello $&#123;params.PERSON&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="triggers"><a href="#triggers" class="headerlink" title="triggers"></a>triggers</h4><p>触发器指令定义了这个管道何时该执行，一般我们会将管道和GitHub、GitLab、BitBucket关联，
+然后使用它们的webhooks来触发，就不需要这个指令了。如果不适用<code>webhooks</code>，就可以定义两种<code>cron</code>和<code>pollSCM</code></p>
+<ul>
+<li>cron - linux的cron格式<code>triggers { cron(&#39;H 4/* 0 0 1-5&#39;) }</code></li>
+<li>pollSCM - jenkins的<code>poll scm</code>语法，比如<code>triggers { pollSCM(&#39;H 4/* 0 0 1-5&#39;) }</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    triggers &#123;</span><br><span class="line">        cron(&apos;H 4/* 0 0 1-5&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Hello World&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="stage"><a href="#stage" class="headerlink" title="stage"></a>stage</h4><p><code>stage</code>指令定义在<code>stages</code>块中，里面必须至少包含一个<code>steps</code>指令，一个可选的<code>agent</code>指令，以及其他stage相关指令。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Hello World&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h4><p>定义自动安装并自动放入<code>PATH</code>里面的工具集合
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    tools &#123;</span><br><span class="line">        maven &apos;apache-maven-3.0.1&apos; ①</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &apos;mvn --version&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注：① 工具名称必须预先在Jenkins中配置好了 → Global Tool Configuration.</p>
+<h4 id="内置条件"><a href="#内置条件" class="headerlink" title="内置条件"></a>内置条件</h4><ul>
+<li>branch - 分支匹配才执行 <code>when { branch &#39;master&#39; }</code></li>
+<li>environment - 环境变量匹配才执行 <code>when { environment name: &#39;DEPLOY_TO&#39;, value: &#39;production&#39; }</code></li>
+<li>expression - groovy表达式为真才执行 <code>expression { return params.DEBUG_BUILD } }</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example Build&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Hello World&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&apos;Example Deploy&apos;) &#123;</span><br><span class="line">            when &#123;</span><br><span class="line">                branch &apos;production&apos;</span><br><span class="line">            &#125;</span><br><span class="line">            echo &apos;Deploying&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h3><p>这里就是实实在在的执行步骤了，每个步骤step都具体干些什么东西，
+前面的<code>Sections</code>、<code>Directives</code>算控制逻辑和环境准备，这里的就是真实执行步骤。</p>
+<p>这部分内容最多不可能全部讲完，<a href="https://jenkins.io/doc/pipeline/steps/" target="_blank" rel="noopener">官方Step指南</a> 包含所有的东西。</p>
+<p><code>Declared Pipeline</code>和<code>Scripted Pipeline</code>都能使用这些step，除了下面这个特殊的<code>script</code>。</p>
+<p>一个特殊的step就是<code>script</code>，它可以让你在声明管道中执行脚本，使用groovy语法，这个非常有用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// Declarative //</span><br><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;Example&apos;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &apos;Hello World&apos;</span><br><span class="line">                script &#123;</span><br><span class="line">                    def browsers = [&apos;chrome&apos;, &apos;firefox&apos;]</span><br><span class="line">                    for (int i = 0; i &lt; browsers.size(); ++i) &#123;</span><br><span class="line">                        echo &quot;Testing the $&#123;browsers[i]&#125; browser&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                script &#123;</span><br><span class="line">                    // 一个优雅的退出pipeline的方法，这里可执行任意逻辑</span><br><span class="line">                    if( $VALUE1 == $VALUE2 ) &#123;</span><br><span class="line">                       currentBuild.result = &apos;SUCCESS&apos;</span><br><span class="line">                       return</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后列出来一个典型的<code>Scripted Pipeline</code>：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">node(&apos;master&apos;) &#123;</span><br><span class="line">    checkout scm</span><br><span class="line"></span><br><span class="line">    stage(&apos;Build&apos;) &#123;</span><br><span class="line">        docker.image(&apos;maven:3.3.3&apos;).inside &#123;</span><br><span class="line">            sh &apos;mvn --version&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stage(&apos;Deploy&apos;) &#123;</span><br><span class="line">        if (env.BRANCH_NAME == &apos;master&apos;) &#123;</span><br><span class="line">            echo &apos;I only execute on the master branch&apos;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            echo &apos;I execute elsewhere&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，<code>Scripted Pipeline</code>没那么多东西，就是定义一个<code>node</code>，
+里面多个<code>stage</code>，里面就是使用Groovy语法执行各个<code>step</code>了，非常简单和清晰，也非常灵活。</p>
+<h3 id="两种Pipeline比较"><a href="#两种Pipeline比较" class="headerlink" title="两种Pipeline比较"></a>两种Pipeline比较</h3><p><code>Declarative Pipeline</code>相对简单，而且不需要学习groovy语法，对于日常的一般任务完全够用，
+而<code>Scripted Pipeline</code>可通过Groovy语言的强大特性做任何你想做的事情。</p>
+<h2 id="Blue-Ocean"><a href="#Blue-Ocean" class="headerlink" title="Blue Ocean"></a>Blue Ocean</h2><p>Jenkins最新整了个<code>Blue Ocean</code>出来，我觉得有必要用单独来介绍一下这个东西。</p>
+<p><code>Blue Ocean</code>重新设计了用户使用Jenkins的方式，给我们带来极大的方便，同时也兼容自由风格的任务定义。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>可以在当前Jenkins环境下面安装<code>Blue Ocean</code>插件，具体步骤：</p>
+<ol>
+<li>登录Jenkins服务器</li>
+<li>侧边栏点击”Manage Jenkins” -&gt; “Manage Plugins”</li>
+<li>选择”Available”然后使用搜索框查找”Blue Ocean”</li>
+<li>在安装列点击checkbox</li>
+<li>选择”不重启安装”或”下载并重启后安装”</li>
+</ol>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>安装好后会出现一个”Open Blue Ocean”的按钮，点击即可进入蓝色海洋：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins17.png" alt=""></p>
+<p>界面如下：</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins18.png" alt=""></p>
+<p>蓝色海洋果真是蓝色的，^_^</p>
+<h3 id="Pipeline编辑器"><a href="#Pipeline编辑器" class="headerlink" title="Pipeline编辑器"></a>Pipeline编辑器</h3><p>使用管道编辑器是最简单的方式，可以来创建多个并行执行的任务。
+编辑完保存后会自动保存为<code>Jenkinsfile</code>并放到源码管理系统中。</p>
+<p>这里我演示一个在github中没有定义过<code>Jenkinsfile</code>的仓库，创建pipeline会默认写入<code>Jenkinsfile</code>文件。</p>
+<p>首先需要在GitHub上面生成你的<code>Personal access tokens</code>，然后创建一个关联GitHub的管道，可视化编辑任务。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins19.png" alt=""></p>
+<p>编辑完<code>pipeline</code>后保存会执行一次commit和push操作</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins20.png" alt=""></p>
+<p>个人感觉这种可视化简单点的倒可以，复杂的还是手动写吧。</p>
+<p>弄好后你想执行某个pipeline，就先点下那个五角星，上面就会出现执行按钮了。</p>
+<p><img src="https://xnstatic-1253397658.file.myqcloud.com/jenkins21.png" alt=""></p>
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><p>如果遇见<code>for (item : items)</code>报错<code>NotSerializableException</code>或者<code>Unserializable iterator</code>等等错误，
+就将<code>foreach</code>循环改成传统C语言的循环：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0; i &lt; cluster_nodes.size(); i++) &#123;</span><br><span class="line">    node = cluster_nodes[i]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/20/fullstack/jenkins01/" rel="next" title="Jenkins持续集成 - 安装配置">
+                <i class="fa fa-chevron-left"></i> Jenkins持续集成 - 安装配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/25/fullstack/jenkins03/" rel="prev" title="Jenkins持续集成 - 使用案例">
+                Jenkins持续集成 - 使用案例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="Yahkun Ding" />
+            
+              <p class="site-author-name" itemprop="name">Yahkun Ding</p>
+              <p class="site-description motion-element" itemprop="description">这里要写啥我不是很清楚 →_→</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">186</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yahkun" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yahkun@foxmail.com" target="_blank" title="E-mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list" style="list-style: none;">
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.infoq.com/cn/" title="InfoQ" target="_blank">InfoQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://blog.jobbole.com/" title="伯乐在线" target="_blank">伯乐在线</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item" style="margin-left: 8px; width:45%;">
+                    <a href="http://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道名词"><span class="nav-number">1.</span> <span class="nav-text">管道名词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义管道"><span class="nav-number">2.</span> <span class="nav-text">定义管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-UI方式"><span class="nav-number">2.1.</span> <span class="nav-text">Web UI方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkinsfile方式"><span class="nav-number">2.2.</span> <span class="nav-text">Jenkinsfile方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Poll-SCM-触发器"><span class="nav-number">2.3.</span> <span class="nav-text">Poll SCM 触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Push触发器"><span class="nav-number">2.4.</span> <span class="nav-text">Push触发器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Jenkinsfile"><span class="nav-number">3.</span> <span class="nav-text">使用Jenkinsfile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#部署三阶段"><span class="nav-number">3.1.</span> <span class="nav-text">部署三阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量"><span class="nav-number">3.2.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用多个agent"><span class="nav-number">3.3.</span> <span class="nav-text">使用多个agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multibranch-Pipeline"><span class="nav-number">3.4.</span> <span class="nav-text">Multibranch Pipeline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pipeline语法"><span class="nav-number">4.</span> <span class="nav-text">Pipeline语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sections"><span class="nav-number">4.1.</span> <span class="nav-text">Sections</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#post"><span class="nav-number">4.1.1.</span> <span class="nav-text">post</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stages"><span class="nav-number">4.1.2.</span> <span class="nav-text">stages</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#steps"><span class="nav-number">4.1.3.</span> <span class="nav-text">steps</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Directives"><span class="nav-number">4.2.</span> <span class="nav-text">Directives</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#agent"><span class="nav-number">4.2.1.</span> <span class="nav-text">agent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#environment"><span class="nav-number">4.2.2.</span> <span class="nav-text">environment</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#options"><span class="nav-number">4.2.3.</span> <span class="nav-text">options</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#parameters"><span class="nav-number">4.2.4.</span> <span class="nav-text">parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#triggers"><span class="nav-number">4.2.5.</span> <span class="nav-text">triggers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stage"><span class="nav-number">4.2.6.</span> <span class="nav-text">stage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tools"><span class="nav-number">4.2.7.</span> <span class="nav-text">tools</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置条件"><span class="nav-number">4.2.8.</span> <span class="nav-text">内置条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Steps"><span class="nav-number">4.3.</span> <span class="nav-text">Steps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种Pipeline比较"><span class="nav-number">4.4.</span> <span class="nav-text">两种Pipeline比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blue-Ocean"><span class="nav-number">5.</span> <span class="nav-text">Blue Ocean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">5.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">5.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline编辑器"><span class="nav-number">5.3.</span> <span class="nav-text">Pipeline编辑器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FAQ"><span class="nav-number">6.</span> <span class="nav-text">FAQ</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 - <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yahkun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">361.2k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">粤ICP备17025554号-1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yahkun',
+            repo: 'comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '56fd98792841961d31a92ce3a2b5ba36e7bc2f17',
+            
+                client_id: '608d980b75fc48a1873e'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
